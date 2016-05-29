@@ -1,0 +1,89 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: black;
+}
+
+h1 {
+  text-align: center;
+  color: white;
+}
+
+h2 {
+  text-align: center;
+  color: white;
+}
+
+img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+
+.channel {
+  border: 1px solid black;
+}
+
+#header {
+  margin: auto;
+  margin-top: 25px;
+  width: 730px;
+}
+
+
+#channels {
+  margin: auto;
+  width: 700px;
+}
+
+.channel_filter {
+  background-color: #6441a5;
+  color: white;
+  height: 50px;
+  padding-top: 10px;
+  font-size: 1.4em;
+  font-weight: bold;
+  text-align: center;
+  border: 1px solid white;
+
+}
+
+.filter_selected {
+  color: white;
+}
+
+.channel_filter:hover {
+  background-color: #7354ae;
+  cursor: pointer;
+}
+
+.twitch_link {
+  display: block;
+  font-weight: bold;
+  margin-top: 15px;
+  margin-left: 10px;
+}
+
+.twitch_status {
+  display: block;
+  margin-top: 15px;
+}
+
+.channel_offline {
+  background-color: #DDD;
+}
+
+.channel_online {
+  background-color: #00cc00;
+}
+.channel_online a {
+  color: white;
+}
+
+.hidden {
+  visibility: hidden;
+}
