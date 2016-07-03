@@ -1,29 +1,59 @@
+<!doctype html>
 <html>
   <head>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="css/twitch.css">
+    <meta charset="utf-8"/>
     <link rel="stylesheet" type="text/css" href="css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="css/twitch.css">
     <title>FreeCodeCamp - Twitch.tv JSON API</title>
   </head>
   <body>
-    <div class="container-fluid">
-      <div class="row">
-        <h1>FreeCodeCamp Zipline</h1>
-        <h2>Twitch.tv JSON API</h2>
-      </div>
-      <div class="row" id="header">
+      <h1>FreeCodeCamp Zipline</h1>
+      <h2>Twitch.tv JSON API</h2>
 
-        <div class="col-md-4 channel_filter" id="filter_none">All</div>
-        <div class="col-md-4 channel_filter" id="filter_online">Online</div>
-        <div class="col-md-4 channel_filter" id="filter_offline">Offline</div>
-      </div>
-      <div class="row" id="channels">
 
-      </div>
-    </div>
+      <ul class="flex-container" id="channels">
+
+        <li class="flex-item">
+          <div class="streamerIcon">
+            <img src="https://static-cdn.jtvnw.net/jtv_user_pictures/liveatthebike-profile_image-9bb69830a41559ec-300x300.jpeg">
+          </div>
+          <div class="streamerName">
+            <a href="#" target="_blank" class="twitch_link">LiveattheBike</a>
+          </div>
+          <div class="streamGame">
+            Poker: Best of Live at the Bike!
+          </div>
+          <div class="streamPreview">
+            <img src="https://static-cdn.jtvnw.net/previews-ttv/live_user_liveatthebike-640x360.jpg">
+          </div>
+        </li>
+        <li class="flex-item">
+          <div class="streamerIcon">
+            <img src="https://static-cdn.jtvnw.net/jtv_user_pictures/ogamingsc2-profile_image-9021dccf9399929e-300x300.jpeg">
+          </div>
+          <div class="streamerName">
+            <a href="#" target="_blank" class="twitch_link">OgamingSC2</a>
+          </div>
+          <div class="streamGame">
+            StarCraft II: [FR] Rediffusion SSL Challenger Group D for Death
+          </div>
+          <div class="streamPreview">
+            <img src="https://static-cdn.jtvnw.net/previews-ttv/live_user_ogamingsc2-640x360.jpg">
+          </div>
+        </li>
+      </ul>
+
+
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+
+    <!--
     <script type="text/javascript" src="twitch.js"></script>
+    <div class="row" id="header">
+      <div class="channel_filter" id="filter_none">All</div>
+      <div class="channel_filter" id="filter_online">Online</div>
+      <div class="channel_filter" id="filter_offline">Offline</div>
+    </div>
+  -->
   </body>
 </html>

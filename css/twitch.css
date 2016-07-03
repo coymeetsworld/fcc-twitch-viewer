@@ -13,27 +13,90 @@ h2 {
   color: white;
 }
 
-img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
+ul {
+  list-style-type: none;
 }
 
+.flex-container {
+  display: -webkit-flex; /* Safari */
+  display: flex;
+  flex-direction: column;
+  max-width: 642px; /* width of preview image from twitch plus 1 for left and right borders. */
+  margin: 0 auto;
+  align-items: space-around;
+  align-content: flex-start;
+}
 
+.flex-item {
+  border: 1px solid white;
+  max-width: 640px;
+  height: 436px;
+  margin-bottom: 10px;
+  background-color: #00cc00;
+}
+
+.streamerIcon {
+  float: left;
+  height: 75px;
+}
+.streamerIcon img {
+  width: 75px;
+  height: 75px;
+}
+.streamerName {
+  font-size: 1.2em;
+  margin-left: 85px;
+  margin-top: 10px;
+}
+.streamerName a {
+  text-decoration:none;
+  color: #fff;
+}
+.streamGame {
+  margin-left: 95px;
+  margin-top: 7px;
+}
+
+.streamPreview {
+  clear: both;
+  background-color: #FFF;
+  height: 356px;
+}
+.streamPreview img {
+  max-width: 640px;
+  margin: 0;
+  padding: 0;
+  margin-top: 1px;
+
+}
+/*
+.userIcon {
+  width: 50px;
+  height: 50px;
+}
+
+.previewRow {
+  clear: both;
+  padding-top: 10px;
+
+}
+.previewRow img {
+  width: 100%;
+}
 .channel {
-  border: 1px solid black;
+  border: 1px solid white;
 }
 
 #header {
   margin: auto;
   margin-top: 25px;
-  width: 730px;
+  width: 550px;
 }
 
 
 #channels {
   margin: auto;
-  width: 700px;
+  width: 550px;
 }
 
 .channel_filter {
@@ -83,3 +146,4 @@ img {
 .hidden {
   visibility: hidden;
 }
+*/
