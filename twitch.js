@@ -29,17 +29,23 @@ $(document).ready(function() {
     return link;
   }
 
-  $("#filter_none").click(function() {
-    $(".channel_online").removeClass("hidden");
-    $(".channel_offline").removeClass("hidden");
+  $("#filterNone").click(function() {
+    console.log("Click no filter");
+    $(".channelOnline").removeClass("hidden");
+    $(".channelOffline").removeClass("hidden");
+    $(".channelClosed").removeClass("hidden");
   });
-  $("#filter_offline").click(function() {
-    $(".channel_online").addClass("hidden");
-    $(".channel_offline").removeClass("hidden");
+  $("#filterOffline").click(function() {
+    console.log("Click offline filter");
+    $(".channelOnline").addClass("hidden");
+    $(".channelOffline").removeClass("hidden");
+    $(".channelClosed").removeClass("hidden");
   });
-  $("#filter_online").click(function() {
-    $(".channel_offline").addClass("hidden");
-    $(".channel_online").removeClass("hidden");
+  $("#filterOnline").click(function() {
+    console.log("Click online filter");
+    $(".channelOffline").addClass("hidden");
+    $(".channelClosed").addClass("hidden");
+    $(".channelOnline").removeClass("hidden");
   });
 
   function getUsers(user) {
@@ -92,27 +98,22 @@ $(document).ready(function() {
           channelItem.addClass('channelClosed');
           statusColumn.text('Account closed');
           $(statusColumn).appendTo(channelItem);
-          $(channelItem).appendTo("#channels");
         }
         else if (streamData.stream == null) {
           /* TODO */
           channelItem.addClass('channelOffline');
           statusColumn.text('Offline');
           $(statusColumn).appendTo(channelItem);
-          $(channelItem).appendTo("#channels");
         } else {
           channelItem.addClass('channelOnline');
           statusColumn.text(streamData.stream.channel.game + ": " + streamData.stream.channel.status);
           $(statusColumn).appendTo(channelItem);
-
           var streamPreview = $('<div>');
           $(createPreviewImage(streamData.stream.preview.large)).appendTo(streamPreview);
           streamPreview.addClass('streamPreview');
           $(streamPreview).appendTo(channelItem);
-          $(channelItem).prependTo("#channels");
         }
-
-        //$(channelItem).appendTo("#channels");
+        $(channelItem).appendTo("#channels");
       });
     });
 
@@ -120,9 +121,7 @@ $(document).ready(function() {
 
 
   var usernames = ["freecodecamp", "magic", "celinalin", "nanonoko","wsopreplaystream","jonathanlittle", "liveatthebike", "esl_sc2", "ogamingsc2", "habathcx", "terakilobyte", "thomasballinger", "comster404", "brunofin", "karltowns32"];
-  //var usernames = ["liveatthebike", "ogamingsc2", "magic", "freecodecamp"];
-
-  //var usernames = ["coymeetsworld", "brunofin"];
+  //coymeetsworld, somerandompersonthatdoesnt exist <-- how to handle madeup names
   for (var i = 0; i < usernames.length; i++) {
     getUsers(usernames[i]);
   }
