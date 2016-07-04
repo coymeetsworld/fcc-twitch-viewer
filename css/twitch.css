@@ -30,9 +30,22 @@ ul {
 .flex-item {
   border: 1px solid white;
   max-width: 640px;
-  height: 436px;
   margin-bottom: 10px;
   background-color: #00cc00;
+  /* Initially we don't want any height, and we want the contents to be hidden */
+  max-height: 100px;
+  overflow: hidden;
+
+  /* Set our transitions up. */
+  -webkit-transition: max-height 0.5s;
+  -moz-transition: max-height 0.5s;
+  transition: max-height 0.5s;
+}
+
+
+.flex-item:hover {
+  /* On hover, set the max-height to something large. In this case there's an obvious limit. */
+	max-height: 437px;
 }
 
 .streamerIcon {
@@ -59,15 +72,18 @@ ul {
 
 .streamPreview {
   clear: both;
-  background-color: #FFF;
-  height: 356px;
+  /*height: 356px;*/
+
+
 }
+
+
 .streamPreview img {
   max-width: 640px;
   margin: 0;
   padding: 0;
   margin-top: 1px;
-
+  border-top: 1px solid white;
 }
 /*
 .userIcon {
