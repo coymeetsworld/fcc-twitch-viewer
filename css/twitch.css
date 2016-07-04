@@ -31,7 +31,6 @@ ul {
   border: 1px solid white;
   max-width: 640px;
   margin-bottom: 10px;
-  background-color: #00cc00;
   /* Initially we don't want any height, and we want the contents to be hidden */
   max-height: 100px;
   overflow: hidden;
@@ -65,7 +64,7 @@ ul {
   text-decoration:none;
   color: #fff;
 }
-.streamGame {
+.streamStatus {
   margin-left: 95px;
   margin-top: 7px;
 }
@@ -77,7 +76,6 @@ ul {
 
 }
 
-
 .streamPreview img {
   max-width: 640px;
   margin: 0;
@@ -85,6 +83,22 @@ ul {
   margin-top: 1px;
   border-top: 1px solid white;
 }
+
+.channelOnline {
+  background-color: #00cc00;
+  order: 0;
+}
+
+.channelOffline {
+  background-color: #999;
+  order: 1;
+}
+
+.channelClosed {
+  background-color: #999;
+  order: 2;
+}
+
 /*
 .userIcon {
   width: 50px;

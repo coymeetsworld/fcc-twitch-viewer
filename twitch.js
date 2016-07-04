@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
-  const NO_USER_ICON_URL= "http://www.brandsoftheworld.com/sites/default/files/styles/logo-thumbnail/public/022015/twitch.png?itok=kKyIL2PQ";
-
+  //const NO_USER_ICON_URL= "http://www.brandsoftheworld.com/sites/default/files/styles/logo-thumbnail/public/022015/twitch.png?itok=kKyIL2PQ";
+  const NO_USER_ICON_URL= "https://dl.dropboxusercontent.com/u/26748984/web-project-resources/freecodecamp/TwitchViewer/twitchDefaultIcon.png";
   function createUserImage(src) {
     var imageTag = $('<img>');
     imageTag.addClass('userIcon');
@@ -25,7 +25,6 @@ $(document).ready(function() {
     var link = $('<a>');
     link.attr('href', 'http://www.twitch.tv/' + streamer_name);
     link.attr('target', '_blank');
-    link.attr('class', 'twitch_link');
     link.html(streamer_name);
     return link;
   }
@@ -59,20 +58,18 @@ $(document).ready(function() {
         display_name: Magic
         logo: logo url
       */
-      var channelItem = $('<div>');
+      var channelItem = $('<li>');
       channelItem.attr('class', 'flex-item');
 
-      var icon_column = $('<div>');
-      icon_column.attr('class', 'col-md-1');
+      var iconColumn = $('<div>');
+      iconColumn.attr('class', 'streamerIcon');
+      $(createUserImage(userData.logo)).appendTo(iconColumn);
+      $(iconColumn).appendTo(channelItem);
 
-      $(createUserImage(userData.logo)).appendTo(icon_column);
-      $(icon_column).appendTo(channelItem);
-
-      var name_column = $('<div>');
-      name_column.attr('class', 'col-md-3 twitch_link_column');
-
-      $(createLink(userData.display_name)).appendTo(name_column);
-      $(name_column).appendTo(channelItem);
+      var nameColumn = $('<div>');
+      nameColumn.attr('class', 'streamerName');
+      $(createLink(userData.display_name)).appendTo(nameColumn);
+      $(nameColumn).appendTo(channelItem);
 
       $.getJSON('https://api.twitch.tv/kraken/streams/' + userData.name + '?callback=?', function(streamData) {
 
@@ -87,29 +84,31 @@ $(document).ready(function() {
             stream.channel.game: "Name of game (i.e. Starcraft II, Poker)"
             stream.channel.status "Best of Live at the Bike! "
         */
-        var desc_column = $('<div>');
-        desc_column.attr('class', 'col-md-8 twitch_status');
+        var statusColumn = $('<div>');
+        statusColumn.attr('class', 'streamStatus');
 
         if (streamData.status == 422) {
-          channelItem.addClass('channel_offline');
-          desc_column.text('Account closed');
-          $(desc_column).appendTo(channelItem);
+          /* TODO */
+          channelItem.addClass('channelClosed');
+          statusColumn.text('Account closed');
+          $(statusColumn).appendTo(channelItem);
           $(channelItem).appendTo("#channels");
         }
         else if (streamData.stream == null) {
-          channelItem.addClass('channel_offline');
-          desc_column.text('Offline');
-          $(desc_column).appendTo(channelItem);
+          /* TODO */
+          channelItem.addClass('channelOffline');
+          statusColumn.text('Offline');
+          $(statusColumn).appendTo(channelItem);
           $(channelItem).appendTo("#channels");
         } else {
-          channelItem.addClass('channel_online');
-          desc_column.text(streamData.stream.channel.game + ": " + streamData.stream.channel.status);
-          $(desc_column).appendTo(channelItem);
+          channelItem.addClass('channelOnline');
+          statusColumn.text(streamData.stream.channel.game + ": " + streamData.stream.channel.status);
+          $(statusColumn).appendTo(channelItem);
 
-          var previewRow = $('<div>');
-          $(createPreviewImage(streamData.stream.preview.large)).appendTo(previewRow);
-          previewRow.addClass('previewRow');
-          $(previewRow).appendTo(channelItem);
+          var streamPreview = $('<div>');
+          $(createPreviewImage(streamData.stream.preview.large)).appendTo(streamPreview);
+          streamPreview.addClass('streamPreview');
+          $(streamPreview).appendTo(channelItem);
           $(channelItem).prependTo("#channels");
         }
 
@@ -120,8 +119,8 @@ $(document).ready(function() {
   }
 
 
-  //var usernames = ["freecodecamp", "magic", "celinalin", "nanonoko","wsopreplaystream","jonathanlittle", "liveatthebike", "esl_sc2", "ogamingsc2", "habathcx", "terakilobyte", "thomasballinger", "comster404", "brunofin"];
-  var usernames = ["liveatthebike", "ogamingsc2", "magic", "freecodecamp"];
+  var usernames = ["freecodecamp", "magic", "celinalin", "nanonoko","wsopreplaystream","jonathanlittle", "liveatthebike", "esl_sc2", "ogamingsc2", "habathcx", "terakilobyte", "thomasballinger", "comster404", "brunofin", "karltowns32"];
+  //var usernames = ["liveatthebike", "ogamingsc2", "magic", "freecodecamp"];
 
   //var usernames = ["coymeetsworld", "brunofin"];
   for (var i = 0; i < usernames.length; i++) {
