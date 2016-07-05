@@ -3,14 +3,19 @@ body {
   background-color: black;
 }
 
-h1 {
+#header {
+  font-size: 3em;
   text-align: center;
   color: white;
+  margin-top: 15px;
+  margin-bottom: 35px;
 }
 
-h2 {
-  text-align: center;
-  color: white;
+/* For info icon (i.e. about section). */
+#header img {
+  width: 15px;
+  margin-top: -30px;
+  margin-left: -5px;
 }
 
 .flex-container {
@@ -27,19 +32,16 @@ h2 {
 
 .flex-item {
   border: 1px solid white;
-  margin-bottom: 10px;
-  /* Initially we don't want any height, and we want the contents to be hidden */
+  margin-bottom: 15px;
   max-height: 100px;
   overflow: hidden;
 
-  /* Set our transitions up. */
   -webkit-transition: max-height 0.5s;
   -moz-transition: max-height 0.5s;
   transition: max-height 0.5s;
 }
 
 .flex-item:hover {
-  /* On hover, set the max-height to something large. In this case there's an obvious limit. */
 	max-height: 457px;
 }
 
@@ -68,6 +70,12 @@ h2 {
   text-decoration:none;
   color: #fff;
 }
+
+/*Need to resize bootstrap tooltip so that long bio text can fit inside and not overflow. */
+div.tooltip-inner {
+    max-width: 350px;
+}
+
 .streamStatus {
   margin-left: 95px;
   margin-top: 7px;
@@ -129,7 +137,6 @@ h2 {
   margin-bottom: 20px;
 }
 .channelFilter {
-  /*display: inline-block;*/
   background-color: #6441a5;
   color: white;
   padding: 5px 15px 5px 15px;
@@ -139,7 +146,6 @@ h2 {
   border: 1px solid white;
   width: 33%;
   transition: 0.2s ease-in;
-
 }
 
 .channelFilter:hover {

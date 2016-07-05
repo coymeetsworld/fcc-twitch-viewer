@@ -1,6 +1,7 @@
 $(document).ready(function() {
 
   const NO_USER_ICON_URL= "https://dl.dropboxusercontent.com/u/26748984/web-project-resources/freecodecamp/TwitchViewer/twitchDefaultIcon.png";
+
   function createUserImage(src) {
     var imageTag = $('<img>');
     imageTag.addClass('userIcon');
@@ -69,6 +70,7 @@ $(document).ready(function() {
         infoTag.attr('data-toggle', 'tooltip');
         infoTag.attr('title',userData.bio);
         infoTag.appendTo($('#featuredStream'+name));
+        $('[data-toggle="tooltip"]').tooltip();
       }
     });
   }
@@ -200,7 +202,6 @@ $(document).ready(function() {
   }
 
 
-  //var usernames = ["freecodecamp", "magic", "celinalin", "nanonoko","wsopreplaystream","jonathanlittle", "liveatthebike", "esl_sc2", "ogamingsc2", "habathcx", "terakilobyte", "thomasballinger", "comster404", "brunofin", "karltowns32", "somejunkuserthatdoesntexist"];
   var usernames = ["freecodecamp", "magic", "celinalin", "nanonoko","wsopreplaystream","jonathanlittle", "liveatthebike", "esl_sc2", "ogamingsc2", "habathcx", "terakilobyte", "thomasballinger", "comster404", "brunofin", "karltowns32", "somejunkuserthatdoesntexist"];
 
   getFeaturedStreams();

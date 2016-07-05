@@ -8,15 +8,33 @@
     <title>FreeCodeCamp - Twitch.tv JSON API</title>
   </head>
   <body>
-      <h1>FreeCodeCamp Zipline</h1>
-      <h2>Twitch.tv JSON API</h2>
-      <div id="filterRow">
-        <div class="channelFilter" id="filterNone">All</div>
-        <div class="channelFilter" id="filterOnline">Online</div>
-        <div class="channelFilter" id="filterOffline">Offline</div>
+    <div class="modal fade" id="myModalAbout" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">x</span>
+            </button>
+            <h1 style="text-align: center; font-size: 2em;">About Twitch TV Viewer</h1>
+          </div>
+          <div class="modal-body">
+            <div class="row" style="margin: auto;">
+              <p>The Twitch TV Viewer was written by Coy Sanders to complete one of the three <a href="https://www.freecodecamp.com/challenges/use-the-twitchtv-json-api" target="_blank">Intermediate Front-End Development Projects</a> for FreeCodeCamp to earn the Front-End Development Certification.</p>
+              <p>This application makes several Twitch API calls to gather information on featured streams as well as a hard-coded list of users. Documentation on the Twitch APIs can be found <a href="https://github.com/justintv/Twitch-API/blob/master/v3_resources/streams.md" target="_blank">here</a>.</p>
+            </div>
+          </div>
+        </div>
       </div>
-      <ul class="flex-container" id="channels">
-      </ul>
+    </div>
+    <div id="header">Twitch.tv Stream Viewer <a href="#" data-toggle="modal" data-target="#myModalAbout"><img src="https://dl.dropboxusercontent.com/u/26748984/web-project-resources/freecodecamp/TwitchViewer/info.png"></a></div>
+
+    <div id="filterRow">
+      <div class="channelFilter" id="filterNone">All</div>
+      <div class="channelFilter" id="filterOnline">Online</div>
+      <div class="channelFilter" id="filterOffline">Offline</div>
+    </div>
+    <ul class="flex-container" id="channels">
+    </ul>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <script type="text/javascript" src="twitch.js"></script>
