@@ -24,16 +24,22 @@ $(document).ready(function() {
     return link;
   }
 
-  function createLink(streamerName) {
+  function createLink(streamerName, isFeatured) {
     var link = $('<a>');
     link.attr('href', 'http://www.twitch.tv/' + streamerName);
     link.attr('target', '_blank');
-    link.html(streamerName);
+    if (isFeatured) {
+      link.html("<strong>Featured:</strong> " + streamerName);
+    } else {
+      link.html(streamerName);
+    }
+
     return link;
   }
 
   $("#filterNone").click(function() {
     console.log("Click no filter");
+    $(".channelFeatured").removeClass("hidden");
     $(".channelOnline").removeClass("hidden");
     $(".channelOffline").removeClass("hidden");
     $(".channelClosed").removeClass("hidden");
@@ -41,6 +47,7 @@ $(document).ready(function() {
   $("#filterOffline").click(function() {
     console.log("Click offline filter");
     $(".channelOnline").addClass("hidden");
+    $(".channelFeatured").addClass("hidden");
     $(".channelOffline").removeClass("hidden");
     $(".channelClosed").removeClass("hidden");
   });
@@ -49,7 +56,51 @@ $(document).ready(function() {
     $(".channelOffline").addClass("hidden");
     $(".channelClosed").addClass("hidden");
     $(".channelOnline").removeClass("hidden");
+    $(".channelFeatured").removeClass("hidden");
   });
+
+  function getFeaturedStreams() {
+
+    $.getJSON('https://api.twitch.tv/kraken/streams/featured?limit=5&offset=0', function (featuredData) {
+      console.log(featuredData);
+      var stream;
+      for (var i = 0; i < 5; i++) {
+        stream = featuredData.featured[i].stream;
+
+        var channelItem = $('<li>');
+        channelItem.attr('class', 'flex-item');
+        var iconColumn = $('<div>');
+        iconColumn.attr('class', 'streamerIcon');
+        $(createUserImage(stream.channel.logo)).appendTo(iconColumn);
+        $(iconColumn).appendTo(channelItem);
+
+        var nameColumn = $('<div>');
+        nameColumn.attr('class', 'streamerName');
+        $(createLink(stream.channel.display_name, true)).appendTo(nameColumn);
+
+        // user Bio not in this call, need another.
+
+        $(nameColumn).appendTo(channelItem);
+
+
+        var statusColumn = $('<div>');
+        statusColumn.attr('class', 'streamStatus');
+
+        channelItem.addClass('channelFeatured');
+        statusColumn.text(stream.channel.game + ": " + stream.channel.status);
+        $(statusColumn).appendTo(channelItem);
+        var streamPreview = $('<div>');
+        $(createPreviewImage(stream.channel.display_name, stream.preview.large)).appendTo(streamPreview);
+        streamPreview.addClass('streamPreview');
+        $(streamPreview).appendTo(channelItem);
+        var streamPreviewInfo = $('<div>');
+        streamPreviewInfo.addClass('streamPreviewInfo');
+        streamPreviewInfo.html("Viewers: " + stream.viewers);
+        $(streamPreviewInfo).appendTo(channelItem);
+        $(channelItem).appendTo("#channels");
+      }
+    });
+  }
 
   function getUsers(user) {
 
@@ -77,7 +128,7 @@ $(document).ready(function() {
 
       var nameColumn = $('<div>');
       nameColumn.attr('class', 'streamerName');
-      $(createLink(userData.display_name)).appendTo(nameColumn);
+      $(createLink(userData.display_name, false)).appendTo(nameColumn);
 
       if (userData.bio != null && userData.bio != '') {
         console.log("Username: " + userData.name);
@@ -136,6 +187,8 @@ $(document).ready(function() {
 
   //var usernames = ["freecodecamp", "magic", "celinalin", "nanonoko","wsopreplaystream","jonathanlittle", "liveatthebike", "esl_sc2", "ogamingsc2", "habathcx", "terakilobyte", "thomasballinger", "comster404", "brunofin", "karltowns32", "somejunkuserthatdoesntexist"];
   var usernames = ["freecodecamp", "magic", "celinalin", "nanonoko","wsopreplaystream","jonathanlittle", "liveatthebike", "esl_sc2", "ogamingsc2", "habathcx", "terakilobyte", "thomasballinger", "comster404", "brunofin", "karltowns32", "somejunkuserthatdoesntexist"];
+
+  getFeaturedStreams();
   for (var i = 0; i < usernames.length; i++) {
     getUsers(usernames[i]);
   }

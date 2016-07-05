@@ -71,6 +71,7 @@ h2 {
 .streamStatus {
   margin-left: 95px;
   margin-top: 7px;
+  font-size: 2.0vh;
 }
 
 .streamPreview {
@@ -98,19 +99,23 @@ h2 {
   text-align: right;
 }
 
-.channelOnline {
+.channelFeatured {
   background-color: #00cc00;
   order: 0;
+}
+.channelOnline {
+  background-color: #00cc00;
+  order: 1;
 }
 
 .channelOffline {
   background-color: #999;
-  order: 1;
+  order: 2;
 }
 
 .channelClosed {
   background-color: #999;
-  order: 2;
+  order: 3;
 }
 
 #filterRow {
