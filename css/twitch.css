@@ -139,11 +139,12 @@ h2 {
   border: 1px solid white;
   width: 33%;
   transition: 0.2s ease-in;
+
 }
 
 .channelFilter:hover {
   background-color: #8161BC;
-
+  cursor: pointer;
 }
 
 .hidden {
