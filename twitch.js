@@ -112,6 +112,11 @@ $(document).ready(function() {
           $(createPreviewImage(streamData.stream.preview.large)).appendTo(streamPreview);
           streamPreview.addClass('streamPreview');
           $(streamPreview).appendTo(channelItem);
+
+          var streamPreviewInfo = $('<div>');
+          streamPreviewInfo.addClass('streamPreviewInfo');
+          streamPreviewInfo.html("Viewers: " + streamData.stream.viewers);
+          $(streamPreviewInfo).appendTo(channelItem);
         }
         $(channelItem).appendTo("#channels");
       });
