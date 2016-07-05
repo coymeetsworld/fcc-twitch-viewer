@@ -59,6 +59,20 @@ $(document).ready(function() {
     $(".channelFeatured").removeClass("hidden");
   });
 
+  function getFeaturedInfo(name) {
+    $.getJSON('https://api.twitch.tv/kraken/users/' + name + '?callback=?', function (userData) {
+      if (userData.bio != null && userData.bio != '') {
+        console.log("Username: " + userData.name);
+        console.log("Bio: '" + userData.bio + "'");
+        var infoTag = $('<img>');
+        infoTag.attr('src', 'https://dl.dropboxusercontent.com/u/26748984/web-project-resources/freecodecamp/TwitchViewer/info.png');
+        infoTag.attr('data-toggle', 'tooltip');
+        infoTag.attr('title',userData.bio);
+        infoTag.appendTo($('#featuredStream'+name));
+      }
+    });
+  }
+
   function getFeaturedStreams() {
 
     $.getJSON('https://api.twitch.tv/kraken/streams/featured?limit=5&offset=0', function (featuredData) {
@@ -77,15 +91,13 @@ $(document).ready(function() {
         var nameColumn = $('<div>');
         nameColumn.attr('class', 'streamerName');
         $(createLink(stream.channel.display_name, true)).appendTo(nameColumn);
+        nameColumn.attr('id', 'featuredStream' + stream.channel.display_name);
 
-        // user Bio not in this call, need another.
 
         $(nameColumn).appendTo(channelItem);
 
-
         var statusColumn = $('<div>');
         statusColumn.attr('class', 'streamStatus');
-
         channelItem.addClass('channelFeatured');
         statusColumn.text(stream.channel.game + ": " + stream.channel.status);
         $(statusColumn).appendTo(channelItem);
@@ -97,7 +109,10 @@ $(document).ready(function() {
         streamPreviewInfo.addClass('streamPreviewInfo');
         streamPreviewInfo.html("Viewers: " + stream.viewers);
         $(streamPreviewInfo).appendTo(channelItem);
+
         $(channelItem).appendTo("#channels");
+        getFeaturedInfo(stream.channel.display_name);
+
       }
     });
   }
@@ -133,11 +148,11 @@ $(document).ready(function() {
       if (userData.bio != null && userData.bio != '') {
         console.log("Username: " + userData.name);
         console.log("Bio: '" + userData.bio + "'");
-        var imageTag = $('<img>');
-        imageTag.attr('src', 'https://dl.dropboxusercontent.com/u/26748984/web-project-resources/freecodecamp/TwitchViewer/info.png');
-        imageTag.attr('data-toggle', 'tooltip');
-        imageTag.attr('title',userData.bio);
-        imageTag.appendTo(nameColumn);
+        var infoTag = $('<img>');
+        infoTag.attr('src', 'https://dl.dropboxusercontent.com/u/26748984/web-project-resources/freecodecamp/TwitchViewer/info.png');
+        infoTag.attr('data-toggle', 'tooltip');
+        infoTag.attr('title',userData.bio);
+        infoTag.appendTo(nameColumn);
 
       }
       $(nameColumn).appendTo(channelItem);
