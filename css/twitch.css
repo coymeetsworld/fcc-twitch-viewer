@@ -60,6 +60,14 @@ h2 {
   text-decoration:none;
   color: #fff;
 }
+.streamerName img {
+  width: 16px;
+  margin-left: 7px;
+}
+.streamerName a:hover {
+  text-decoration:none;
+  color: #fff;
+}
 .streamStatus {
   margin-left: 95px;
   margin-top: 7px;
@@ -67,6 +75,7 @@ h2 {
 
 .streamPreview {
   clear: both;
+
 }
 
 .streamPreview img {
@@ -83,7 +92,7 @@ h2 {
   background-color: #000;
   color: #0c0;
   font-weight: bold;
-  padding-top: 3px;
+  padding-top: 5px;
   padding-right: 7px;
   font-size: 0.8em;
   text-align: right;
