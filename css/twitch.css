@@ -3,8 +3,15 @@ body {
   background-color: black;
 }
 
+/*
+
+
+
+*/
 #header {
   font-size: 3em;
+
+font-family: 'Hind Siliguri', sans-serif;
   text-align: center;
   color: white;
   margin-top: 15px;
@@ -146,7 +153,7 @@ div.tooltip-inner {
   color: white;
   padding: 5px 15px 5px 15px;
   font-size: 1.4em;
-  font-weight: bold;
+  font-family: 'Viga', sans-serif;
   text-align: center;
   border: 1px solid white;
   width: 33%;
