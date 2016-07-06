@@ -202,7 +202,7 @@ $(document).ready(function() {
   }
 
 
-  var usernames = ["freecodecamp", "magic", "celinalin", "nanonoko","wsopreplaystream","jonathanlittle", "liveatthebike", "esl_sc2", "ogamingsc2", "habathcx", "terakilobyte", "thomasballinger", "comster404", "brunofin", "karltowns32", "somejunkuserthatdoesntexist"];
+  var usernames = ["freecodecamp", "magic", "liveatthebike", "karltowns32", "celinalin", "nanonoko","wsopreplaystream","jonathanlittle", "esl_sc2", "ogamingsc2", "habathcx", "terakilobyte", "thomasballinger", "comster404", "brunofin", "somejunkuserthatdoesntexist"];
 
   getFeaturedStreams();
   for (var i = 0; i < usernames.length; i++) {
