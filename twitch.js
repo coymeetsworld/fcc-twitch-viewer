@@ -3,7 +3,7 @@ $(document).ready(function() {
   const NO_USER_ICON_URL= "https://dl.dropboxusercontent.com/u/26748984/web-project-resources/freecodecamp/TwitchViewer/twitchDefaultIcon.png";
 
   /* List of users to query. */
-  var usernames = ["freecodecamp", "magic", "liveatthebike", "karltowns32", "celinalin", "nanonoko","wsopreplaystream","jonathanlittle", "esl_sc2", "ogamingsc2", "habathcx", "terakilobyte", "thomasballinger", "comster404", "brunofin", "somejunkuserthatdoesntexist"];
+  var usernames = ["freecodecamp", "magic", "channelfireball", "liveatthebike", "karltowns32", "celinalin", "nanonoko","wsopreplaystream","jonathanlittle", "esl_sc2", "ogamingsc2", "habathcx", "terakilobyte", "thomasballinger", "comster404", "brunofin", "somejunkuserthatdoesntexist"];
 
 
   createFilterActions();
