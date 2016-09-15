@@ -81,9 +81,10 @@ $(document).ready(function() {
   }
 
 
+
   /* Pulls information about a featured streamer. */
   function getFeaturedInfo(name) {
-    $.getJSON('https://api.twitch.tv/kraken/users/' + name + '?callback=?', function (userData) {
+    $.getJSON('https://api.twitch.tv/kraken/users/' + name + '?client_id=skji05ppnsavrfz5ydkkttvbbzj2h29', function (userData) {
       if (userData.bio != null && userData.bio != '') {
         console.log("Username: " + userData.name);
         console.log("Bio: '" + userData.bio + "'");
@@ -97,9 +98,12 @@ $(document).ready(function() {
     });
   }
 
-  /* Makes an API call to get the top 5 featured streams on Twitch and render them on the page. */
+  /* Makes an API call to get the top 5 featured streams on Twitch and render them on the page.
+    TODO: can't limit the rate with the client_id, investigate
+    https://api.twitch.tv/kraken/streams/featured?client_id=skji05ppnsavrfz5ydkkttvbbzj2h29?limit=5&offset=0
+  */
   function getFeaturedStreams() {
-    $.getJSON('https://api.twitch.tv/kraken/streams/featured?limit=5&offset=0', function (featuredData) {
+    $.getJSON('https://api.twitch.tv/kraken/streams/featured?client_id=skji05ppnsavrfz5ydkkttvbbzj2h29', function (featuredData) {
       var stream;
       for (var i = 0; i < 5; i++) {
         stream = featuredData.featured[i].stream;
@@ -139,7 +143,7 @@ $(document).ready(function() {
 
   /* Makes an API call to get information on a specific Twitch user and renders it on the page. */
   function getUsers(user) {
-    $.getJSON('https://api.twitch.tv/kraken/users/' + user + '?callback=?', function (userData) {
+    $.getJSON('https://api.twitch.tv/kraken/users/' + user + '?client_id=skji05ppnsavrfz5ydkkttvbbzj2h29', function (userData) {
 
       if (userData.status == 404) {
         console.log("404 " + userData.error + ": " + userData.message);
@@ -168,7 +172,7 @@ $(document).ready(function() {
       }
       $(nameColumn).appendTo(channelItem);
 
-      $.getJSON('https://api.twitch.tv/kraken/streams/' + userData.name + '?callback=?', function(streamData) {
+      $.getJSON('https://api.twitch.tv/kraken/streams/' + userData.name + '?client_id=skji05ppnsavrfz5ydkkttvbbzj2h29', function(streamData) {
         var statusColumn = $('<div>');
         statusColumn.attr('class', 'streamStatus');
 
