@@ -1,0 +1,3 @@
+ 19           <p>The Twitch TV Viewer was written by Coy Sanders to complete one of the four <a href="https://www.freecodecamp.com/challenges/use-the-twitchtv-json-api" target="_blank">Intermediate Front-    End Development Projects</a> for FreeCodeCamp to earn the Front-End Development Certification.</p>$
+ 20           <p>This application makes several Twitch API calls to gather information on featured streams as well as a hard-coded list of users. Documentation on the Twitch APIs can be found <a href="htt    ps://github.com/justintv/Twitch-API/blob/master/v3_resources/streams.md" target="_blank">here</a>.</p>$
+

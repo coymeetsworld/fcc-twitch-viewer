@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-  const NO_USER_ICON_URL= "https://dl.dropboxusercontent.com/u/26748984/web-project-resources/freecodecamp/TwitchViewer/twitchDefaultIcon.png";
+  const NO_USER_ICON_URL= "imgs/twitchDefaultIcon.png";
 
   /* List of users to query. */
   var usernames = ["freecodecamp", "magic", "channelfireball", "liveatthebike", "karltowns32", "celinalin", "nanonoko","wsopreplaystream","jonathanlittle", "esl_sc2", "ogamingsc2", "habathcx", "terakilobyte", "thomasballinger", "comster404", "brunofin", "somejunkuserthatdoesntexist"];
@@ -89,7 +89,7 @@ $(document).ready(function() {
         console.log("Username: " + userData.name);
         console.log("Bio: '" + userData.bio + "'");
         var infoTag = $('<img>');
-        infoTag.attr('src', 'https://dl.dropboxusercontent.com/u/26748984/web-project-resources/freecodecamp/TwitchViewer/info.png');
+        infoTag.attr('src', 'imgs/info.png');
         infoTag.attr('data-toggle', 'tooltip');
         infoTag.attr('title',userData.bio);
         infoTag.appendTo($('#featuredStream'+name));
@@ -164,7 +164,7 @@ $(document).ready(function() {
 
       if (userData.bio != null && userData.bio != '') {
         var infoTag = $('<img>');
-        infoTag.attr('src', 'https://dl.dropboxusercontent.com/u/26748984/web-project-resources/freecodecamp/TwitchViewer/info.png');
+        infoTag.attr('src', 'imgs/info.png');
         infoTag.attr('data-toggle', 'tooltip');
         infoTag.attr('title',userData.bio);
         infoTag.appendTo(nameColumn);
