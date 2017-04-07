@@ -3,12 +3,12 @@ $(document).ready(function() {
   const NO_USER_ICON_URL= "imgs/twitchDefaultIcon.png";
 
   /* List of users to query. */
-  var usernames = ["freecodecamp", "magic", "channelfireball", "liveatthebike", "karltowns32", "celinalin", "nanonoko","wsopreplaystream","jonathanlittle", "esl_sc2", "ogamingsc2", "habathcx", "terakilobyte", "thomasballinger", "comster404", "brunofin", "somejunkuserthatdoesntexist"];
+  let usernames = ["freecodecamp", "magic", "channelfireball", "liveatthebike", "karltowns32", "celinalin", "nanonoko","wsopreplaystream","jonathanlittle", "esl_sc2", "ogamingsc2", "habathcx", "terakilobyte", "thomasballinger", "comster404", "brunofin", "somejunkuserthatdoesntexist"];
 
 
   createFilterActions();
   getFeaturedStreams();
-  for (var i = 0; i < usernames.length; i++) {
+  for (let i = 0; i < usernames.length; i++) {
     getUsers(usernames[i]);
   }
 
@@ -45,7 +45,7 @@ $(document).ready(function() {
 
   /* Creates the image tag for the user. If they do not have an image a default will be used in place.*/
   function createUserImage(src) {
-    var imageTag = $('<img>');
+    let imageTag = $('<img>');
     imageTag.addClass('userIcon');
 
     if (src != null) {
@@ -58,10 +58,10 @@ $(document).ready(function() {
 
   /* Creates the image tag for showing the preview of the stream. Only used when a stream is live, there are no previews on offline streams. */
   function createPreviewImage(streamerName, src) {
-    var link = $('<a>');
+    let link = $('<a>');
     link.attr('href', 'http://www.twitch.tv/' + streamerName);
     link.attr('target', '_blank');
-    var imageTag = $('<img>');
+    let imageTag = $('<img>');
     imageTag.attr('src', src);
     link.html(imageTag);
     return link;
@@ -69,7 +69,7 @@ $(document).ready(function() {
 
   /* Creates the link for the streamer to go to their Twitch page. Will also display if its a featured stream or not.*/
   function createLink(streamerName, isFeatured) {
-    var link = $('<a>');
+    let link = $('<a>');
     link.attr('href', 'http://www.twitch.tv/' + streamerName);
     link.attr('target', '_blank');
     if (isFeatured) {
@@ -88,7 +88,7 @@ $(document).ready(function() {
       if (userData.bio != null && userData.bio != '') {
         console.log("Username: " + userData.name);
         console.log("Bio: '" + userData.bio + "'");
-        var infoTag = $('<img>');
+        let infoTag = $('<img>');
         infoTag.attr('src', 'imgs/info.png');
         infoTag.attr('data-toggle', 'tooltip');
         infoTag.attr('title',userData.bio);
@@ -104,33 +104,33 @@ $(document).ready(function() {
   */
   function getFeaturedStreams() {
     $.getJSON('https://api.twitch.tv/kraken/streams/featured?client_id=skji05ppnsavrfz5ydkkttvbbzj2h29', function (featuredData) {
-      var stream;
-      for (var i = 0; i < 5; i++) {
+      let stream;
+      for (let i = 0; i < 5; i++) {
         stream = featuredData.featured[i].stream;
 
-        var channelItem = $('<li>');
+        let channelItem = $('<li>');
         channelItem.attr('class', 'flex-item');
-        var iconColumn = $('<div>');
+        let iconColumn = $('<div>');
         iconColumn.attr('class', 'streamerIcon');
         $(createUserImage(stream.channel.logo)).appendTo(iconColumn);
         $(iconColumn).appendTo(channelItem);
 
-        var nameColumn = $('<div>');
+        let nameColumn = $('<div>');
         nameColumn.attr('class', 'streamerName');
         $(createLink(stream.channel.display_name, true)).appendTo(nameColumn);
         nameColumn.attr('id', 'featuredStream' + stream.channel.display_name);
         $(nameColumn).appendTo(channelItem);
 
-        var statusColumn = $('<div>');
+        let statusColumn = $('<div>');
         statusColumn.attr('class', 'streamStatus');
         channelItem.addClass('channelFeatured');
         statusColumn.text(stream.channel.game + ": " + stream.channel.status);
         $(statusColumn).appendTo(channelItem);
-        var streamPreview = $('<div>');
+        let streamPreview = $('<div>');
         $(createPreviewImage(stream.channel.display_name, stream.preview.large)).appendTo(streamPreview);
         streamPreview.addClass('streamPreview');
         $(streamPreview).appendTo(channelItem);
-        var streamPreviewInfo = $('<div>');
+        let streamPreviewInfo = $('<div>');
         streamPreviewInfo.addClass('streamPreviewInfo');
         streamPreviewInfo.html("Viewers: " + stream.viewers);
         $(streamPreviewInfo).appendTo(channelItem);
@@ -150,20 +150,20 @@ $(document).ready(function() {
         return;
       }
 
-      var channelItem = $('<li>');
+      let channelItem = $('<li>');
       channelItem.attr('class', 'flex-item');
 
-      var iconColumn = $('<div>');
+      let iconColumn = $('<div>');
       iconColumn.attr('class', 'streamerIcon');
       $(createUserImage(userData.logo)).appendTo(iconColumn);
       $(iconColumn).appendTo(channelItem);
 
-      var nameColumn = $('<div>');
+      let nameColumn = $('<div>');
       nameColumn.attr('class', 'streamerName');
       $(createLink(userData.display_name, false)).appendTo(nameColumn);
 
       if (userData.bio != null && userData.bio != '') {
-        var infoTag = $('<img>');
+        let infoTag = $('<img>');
         infoTag.attr('src', 'imgs/info.png');
         infoTag.attr('data-toggle', 'tooltip');
         infoTag.attr('title',userData.bio);
@@ -173,7 +173,7 @@ $(document).ready(function() {
       $(nameColumn).appendTo(channelItem);
 
       $.getJSON('https://api.twitch.tv/kraken/streams/' + userData.name + '?client_id=skji05ppnsavrfz5ydkkttvbbzj2h29', function(streamData) {
-        var statusColumn = $('<div>');
+        let statusColumn = $('<div>');
         statusColumn.attr('class', 'streamStatus');
 
         if (streamData.status == 422) {
@@ -189,11 +189,11 @@ $(document).ready(function() {
           channelItem.addClass('channelOnline');
           statusColumn.text(streamData.stream.channel.game + ": " + streamData.stream.channel.status);
           $(statusColumn).appendTo(channelItem);
-          var streamPreview = $('<div>');
+          let streamPreview = $('<div>');
           $(createPreviewImage(userData.name, streamData.stream.preview.large)).appendTo(streamPreview);
           streamPreview.addClass('streamPreview');
           $(streamPreview).appendTo(channelItem);
-          var streamPreviewInfo = $('<div>');
+          let streamPreviewInfo = $('<div>');
           streamPreviewInfo.addClass('streamPreviewInfo');
           streamPreviewInfo.html("Viewers: " + streamData.stream.viewers);
           $(streamPreviewInfo).appendTo(channelItem);
