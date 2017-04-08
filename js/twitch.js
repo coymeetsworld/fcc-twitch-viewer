@@ -6,7 +6,7 @@ $(document).ready(function() {
   const USERNAMES = ["freecodecamp", "magic", "channelfireball", "liveatthebike", "karltowns32", "celinalin", "nanonoko","wsopreplaystream","jonathanlittle", "esl_sc2", "ogamingsc2", "habathcx", "terakilobyte", "thomasballinger", "comster404", "brunofin", "somejunkuserthatdoesntexist"];
 
   const CLIENT_ID = "skji05ppnsavrfz5ydkkttvbbzj2h29";
-
+  const TWITCH_URL = "https://www.twitch.tv";
 
   /* Creates click function for filtering out streams. */
   const createFilterActions = () => {
@@ -51,7 +51,7 @@ $(document).ready(function() {
   /* Creates the image tag for showing the preview of the stream. Only used when a stream is live, there are no previews on offline streams. */
   const createPreviewImage = (streamerName, src) => {
     let link = $('<a>');
-    link.attr('href', 'http://www.twitch.tv/' + streamerName);
+    link.attr('href', `${TWITCH_URL}/${streamerName}`);
     link.attr('target', '_blank');
     let imageTag = $('<img>');
     imageTag.attr('src', src);
@@ -63,7 +63,7 @@ $(document).ready(function() {
   /* Creates the link for the streamer to go to their Twitch page. Will also display if its a featured stream or not.*/
   const createLink = (streamerName, isFeatured) => {
     let link = $('<a>');
-    link.attr('href', 'http://www.twitch.tv/' + streamerName);
+    link.attr('href', `${TWITCH_URL}/${streamerName}`);
     link.attr('target', '_blank');
     if (isFeatured) {
       link.html("<strong>Featured:</strong> " + streamerName);
@@ -76,7 +76,7 @@ $(document).ready(function() {
 
   /* Pulls information about a featured streamer. */
   const getFeaturedInfo = (name) => {
-    $.getJSON('https://api.twitch.tv/kraken/users/' + name + '?client_id=skji05ppnsavrfz5ydkkttvbbzj2h29', function (userData) {
+    $.getJSON(`https://api.twitch.tv/kraken/users/${name}?client_id=${CLIENT_ID}`, (userData) => {
       if (userData.bio != null && userData.bio != '') {
         console.log("Username: " + userData.name);
         console.log("Bio: '" + userData.bio + "'");
@@ -95,7 +95,7 @@ $(document).ready(function() {
     https://api.twitch.tv/kraken/streams/featured?client_id=skji05ppnsavrfz5ydkkttvbbzj2h29?limit=5&offset=0
   */
   const getFeaturedStreams = () => {
-    $.getJSON('https://api.twitch.tv/kraken/streams/featured?client_id=skji05ppnsavrfz5ydkkttvbbzj2h29', function (featuredData) {
+    $.getJSON(`https://api.twitch.tv/kraken/streams/featured?client_id=${CLIENT_ID}`, (featuredData) => {
       let stream;
       for (let i = 0; i < 5; i++) {
         stream = featuredData.featured[i].stream;
