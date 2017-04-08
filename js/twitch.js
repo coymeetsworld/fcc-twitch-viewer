@@ -3,22 +3,13 @@ $(document).ready(function() {
   const NO_USER_ICON_URL= "imgs/twitchDefaultIcon.png";
 
   /* List of users to query. */
-  let usernames = ["freecodecamp", "magic", "channelfireball", "liveatthebike", "karltowns32", "celinalin", "nanonoko","wsopreplaystream","jonathanlittle", "esl_sc2", "ogamingsc2", "habathcx", "terakilobyte", "thomasballinger", "comster404", "brunofin", "somejunkuserthatdoesntexist"];
+  const USERNAMES = ["freecodecamp", "magic", "channelfireball", "liveatthebike", "karltowns32", "celinalin", "nanonoko","wsopreplaystream","jonathanlittle", "esl_sc2", "ogamingsc2", "habathcx", "terakilobyte", "thomasballinger", "comster404", "brunofin", "somejunkuserthatdoesntexist"];
 
-
-  createFilterActions();
-  getFeaturedStreams();
-  for (let i = 0; i < usernames.length; i++) {
-    getUsers(usernames[i]);
-  }
-
-  /*------------------------------------------------------------------------*/
-  /* Subroutines Listed below */
-  /*------------------------------------------------------------------------*/
+  const CLIENT_ID = "skji05ppnsavrfz5ydkkttvbbzj2h29";
 
 
   /* Creates click function for filtering out streams. */
-  function createFilterActions() {
+  const createFilterActions = () => {
     $("#filterNone").click(function() {
       console.log("Click no filter");
       $(".channelFeatured").removeClass("hidden");
@@ -44,7 +35,7 @@ $(document).ready(function() {
 
 
   /* Creates the image tag for the user. If they do not have an image a default will be used in place.*/
-  function createUserImage(src) {
+  const createUserImage = (src) => {
     let imageTag = $('<img>');
     imageTag.addClass('userIcon');
 
@@ -56,8 +47,9 @@ $(document).ready(function() {
     return imageTag;
   }
 
+
   /* Creates the image tag for showing the preview of the stream. Only used when a stream is live, there are no previews on offline streams. */
-  function createPreviewImage(streamerName, src) {
+  const createPreviewImage = (streamerName, src) => {
     let link = $('<a>');
     link.attr('href', 'http://www.twitch.tv/' + streamerName);
     link.attr('target', '_blank');
@@ -67,8 +59,9 @@ $(document).ready(function() {
     return link;
   }
 
+
   /* Creates the link for the streamer to go to their Twitch page. Will also display if its a featured stream or not.*/
-  function createLink(streamerName, isFeatured) {
+  const createLink = (streamerName, isFeatured) => {
     let link = $('<a>');
     link.attr('href', 'http://www.twitch.tv/' + streamerName);
     link.attr('target', '_blank');
@@ -81,9 +74,8 @@ $(document).ready(function() {
   }
 
 
-
   /* Pulls information about a featured streamer. */
-  function getFeaturedInfo(name) {
+  const getFeaturedInfo = (name) => {
     $.getJSON('https://api.twitch.tv/kraken/users/' + name + '?client_id=skji05ppnsavrfz5ydkkttvbbzj2h29', function (userData) {
       if (userData.bio != null && userData.bio != '') {
         console.log("Username: " + userData.name);
@@ -102,7 +94,7 @@ $(document).ready(function() {
     TODO: can't limit the rate with the client_id, investigate
     https://api.twitch.tv/kraken/streams/featured?client_id=skji05ppnsavrfz5ydkkttvbbzj2h29?limit=5&offset=0
   */
-  function getFeaturedStreams() {
+  const getFeaturedStreams = () => {
     $.getJSON('https://api.twitch.tv/kraken/streams/featured?client_id=skji05ppnsavrfz5ydkkttvbbzj2h29', function (featuredData) {
       let stream;
       for (let i = 0; i < 5; i++) {
@@ -142,8 +134,9 @@ $(document).ready(function() {
   }
 
   /* Makes an API call to get information on a specific Twitch user and renders it on the page. */
-  function getUsers(user) {
-    $.getJSON('https://api.twitch.tv/kraken/users/' + user + '?client_id=skji05ppnsavrfz5ydkkttvbbzj2h29', function (userData) {
+  const getUsers = (user) => {
+    //$.getJSON('https://api.twitch.tv/kraken/users/' + user + '?client_id=skji05ppnsavrfz5ydkkttvbbzj2h29', function (userData) {
+    $.getJSON(`https://api.twitch.tv/kraken/users/${user}?client_id=${CLIENT_ID}`, (userData) => {
 
       if (userData.status == 404) {
         console.log("404 " + userData.error + ": " + userData.message);
@@ -162,7 +155,7 @@ $(document).ready(function() {
       nameColumn.attr('class', 'streamerName');
       $(createLink(userData.display_name, false)).appendTo(nameColumn);
 
-      if (userData.bio != null && userData.bio != '') {
+      if (userData.bio && userData.bio !== '') {
         let infoTag = $('<img>');
         infoTag.attr('src', 'imgs/info.png');
         infoTag.attr('data-toggle', 'tooltip');
@@ -172,16 +165,16 @@ $(document).ready(function() {
       }
       $(nameColumn).appendTo(channelItem);
 
-      $.getJSON('https://api.twitch.tv/kraken/streams/' + userData.name + '?client_id=skji05ppnsavrfz5ydkkttvbbzj2h29', function(streamData) {
+      $.getJSON(`https://api.twitch.tv/kraken/streams/${userData.name}?client_id=${CLIENT_ID}`, (streamData) => {
         let statusColumn = $('<div>');
         statusColumn.attr('class', 'streamStatus');
 
-        if (streamData.status == 422) {
+        if (streamData.status === 422) {
           channelItem.addClass('channelClosed');
           statusColumn.text('Account closed');
           $(statusColumn).appendTo(channelItem);
         }
-        else if (streamData.stream == null) {
+        else if (streamData.stream === null) {
           channelItem.addClass('channelOffline');
           statusColumn.text('Offline');
           $(statusColumn).appendTo(channelItem);
@@ -203,6 +196,12 @@ $(document).ready(function() {
         $('[data-toggle="tooltip"]').tooltip(); // enable tooltips by hovering over info icon.
       });
     });
+  }
+
+  createFilterActions();
+  getFeaturedStreams();
+  for (let i = 0; i < USERNAMES.length; i++) {
+    getUsers(USERNAMES[i]);
   }
 
 });
