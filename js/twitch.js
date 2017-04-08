@@ -10,26 +10,26 @@ $(document).ready(function() {
 
   /* Creates click function for filtering out streams. */
   const createFilterActions = () => {
-    $("#filterNone").click(function() {
+    $("#filter-none").click(function() {
       console.log("Click no filter");
-      $(".channelFeatured").removeClass("hidden");
-      $(".channelOnline").removeClass("hidden");
-      $(".channelOffline").removeClass("hidden");
-      $(".channelClosed").removeClass("hidden");
+      $(".channel-featured").removeClass("hidden");
+      $(".channel-online").removeClass("hidden");
+      $(".channel-offline").removeClass("hidden");
+      $(".channel-closed").removeClass("hidden");
     });
-    $("#filterOffline").click(function() {
+    $("#filter-offline").click(function() {
       console.log("Click offline filter");
-      $(".channelOnline").addClass("hidden");
-      $(".channelFeatured").addClass("hidden");
-      $(".channelOffline").removeClass("hidden");
-      $(".channelClosed").removeClass("hidden");
+      $(".channel-online").addClass("hidden");
+      $(".channel-featured").addClass("hidden");
+      $(".channel-offline").removeClass("hidden");
+      $(".channel-closed").removeClass("hidden");
     });
-    $("#filterOnline").click(function() {
+    $("#filter-online").click(function() {
       console.log("Click online filter");
-      $(".channelOffline").addClass("hidden");
-      $(".channelClosed").addClass("hidden");
-      $(".channelOnline").removeClass("hidden");
-      $(".channelFeatured").removeClass("hidden");
+      $(".channel-offline").addClass("hidden");
+      $(".channel-closed").addClass("hidden");
+      $(".channel-online").removeClass("hidden");
+      $(".channel-featured").removeClass("hidden");
     });
   }
 
@@ -84,7 +84,7 @@ $(document).ready(function() {
         infoTag.attr('src', 'imgs/info.png');
         infoTag.attr('data-toggle', 'tooltip');
         infoTag.attr('title',userData.bio);
-        infoTag.appendTo($('#featuredStream'+name));
+        infoTag.appendTo($('#featured-stream'+name));
         $('[data-toggle="tooltip"]').tooltip();
       }
     });
@@ -103,27 +103,27 @@ $(document).ready(function() {
         let channelItem = $('<li>');
         channelItem.attr('class', 'flex-item');
         let iconColumn = $('<div>');
-        iconColumn.attr('class', 'streamerIcon');
+        iconColumn.attr('class', 'streamer-icon');
         $(createUserImage(stream.channel.logo)).appendTo(iconColumn);
         $(iconColumn).appendTo(channelItem);
 
         let nameColumn = $('<div>');
-        nameColumn.attr('class', 'streamerName');
+        nameColumn.attr('class', 'streamer-name');
         $(createLink(stream.channel.display_name, true)).appendTo(nameColumn);
-        nameColumn.attr('id', 'featuredStream' + stream.channel.display_name);
+        nameColumn.attr('id', 'featured-stream' + stream.channel.display_name);
         $(nameColumn).appendTo(channelItem);
 
         let statusColumn = $('<div>');
-        statusColumn.attr('class', 'streamStatus');
-        channelItem.addClass('channelFeatured');
+        statusColumn.attr('class', 'stream-status');
+        channelItem.addClass('channel-featured');
         statusColumn.text(stream.channel.game + ": " + stream.channel.status);
         $(statusColumn).appendTo(channelItem);
         let streamPreview = $('<div>');
         $(createPreviewImage(stream.channel.display_name, stream.preview.large)).appendTo(streamPreview);
-        streamPreview.addClass('streamPreview');
+        streamPreview.addClass('stream-preview');
         $(streamPreview).appendTo(channelItem);
         let streamPreviewInfo = $('<div>');
-        streamPreviewInfo.addClass('streamPreviewInfo');
+        streamPreviewInfo.addClass('stream-preview-info');
         streamPreviewInfo.html("Viewers: " + stream.viewers);
         $(streamPreviewInfo).appendTo(channelItem);
 
@@ -147,12 +147,12 @@ $(document).ready(function() {
       channelItem.attr('class', 'flex-item');
 
       let iconColumn = $('<div>');
-      iconColumn.attr('class', 'streamerIcon');
+      iconColumn.attr('class', 'streamer-icon');
       $(createUserImage(userData.logo)).appendTo(iconColumn);
       $(iconColumn).appendTo(channelItem);
 
       let nameColumn = $('<div>');
-      nameColumn.attr('class', 'streamerName');
+      nameColumn.attr('class', 'streamer-name');
       $(createLink(userData.display_name, false)).appendTo(nameColumn);
 
       if (userData.bio && userData.bio !== '') {
@@ -167,27 +167,27 @@ $(document).ready(function() {
 
       $.getJSON(`https://api.twitch.tv/kraken/streams/${userData.name}?client_id=${CLIENT_ID}`, (streamData) => {
         let statusColumn = $('<div>');
-        statusColumn.attr('class', 'streamStatus');
+        statusColumn.attr('class', 'stream-status');
 
         if (streamData.status === 422) {
-          channelItem.addClass('channelClosed');
+          channelItem.addClass('channel-closed');
           statusColumn.text('Account closed');
           $(statusColumn).appendTo(channelItem);
         }
         else if (streamData.stream === null) {
-          channelItem.addClass('channelOffline');
+          channelItem.addClass('channel-offline');
           statusColumn.text('Offline');
           $(statusColumn).appendTo(channelItem);
         } else {
-          channelItem.addClass('channelOnline');
+          channelItem.addClass('channel-online');
           statusColumn.text(streamData.stream.channel.game + ": " + streamData.stream.channel.status);
           $(statusColumn).appendTo(channelItem);
           let streamPreview = $('<div>');
           $(createPreviewImage(userData.name, streamData.stream.preview.large)).appendTo(streamPreview);
-          streamPreview.addClass('streamPreview');
+          streamPreview.addClass('stream-preview');
           $(streamPreview).appendTo(channelItem);
           let streamPreviewInfo = $('<div>');
-          streamPreviewInfo.addClass('streamPreviewInfo');
+          streamPreviewInfo.addClass('stream-preview-info');
           streamPreviewInfo.html("Viewers: " + streamData.stream.viewers);
           $(streamPreviewInfo).appendTo(channelItem);
         }

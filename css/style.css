@@ -37,28 +37,28 @@ body {
   max-height: 457px;
 }
 
-.streamerIcon {
+.streamer-icon {
   float: left;
   height: 74px;
 }
-.streamerIcon img {
+.streamer-icon img {
   height: 75px;
   width: 75px;
 }
-.streamerName {
+.streamer-name {
   font-size: 1.2em;
   margin-left: 85px;
   margin-top: 10px;
 }
-.streamerName a {
+.streamer-name a {
   color: #fff;
   text-decoration:none;
 }
-.streamerName img {
+.streamer-name img {
   margin-left: 7px;
   width: 16px;
 }
-.streamerName a:hover {
+.streamer-name a:hover {
   color: #fff;
   text-decoration:none;
 }
@@ -68,24 +68,24 @@ div.tooltip-inner {
   max-width: 350px;
 }
 
-.streamStatus {
+.stream-status {
   font-size: 0.9em;
   margin-left: 95px;
   margin-top: 7px;
 }
 
-.streamPreview {
+.stream-preview {
   clear: both;
 }
 
-.streamPreview img {
+.stream-preview img {
   border-top: 1px solid white;
   margin: 1px 0 -5px 0;
   max-width: 640px;
   padding: 0;
 }
 
-.streamPreviewInfo {
+.stream-preview-info {
   background-color: #000;
   color: #0c0;
   font-size: 0.8em;
@@ -95,27 +95,27 @@ div.tooltip-inner {
   text-align: right;
 }
 
-.channelFeatured {
+.channel-featured {
   background-color: #0c0;
   order: 0;
 }
 
-.channelOnline {
+.channel-online {
   background-color: #0c0;
   order: 1;
 }
 
-.channelOffline {
+.channel-offline {
   background-color: #999;
   order: 2;
 }
 
-.channelClosed {
+.channel-closed {
   background-color: #999;
   order: 3;
 }
 
-#filterRow {
+#row-filter {
   align-items: flex-end;
   display: flex;
   display: -webkit-flex; /* Safari */
@@ -126,7 +126,7 @@ div.tooltip-inner {
   max-width: 642px; /* width of preview image from twitch plus 1 for left and right borders. */
 }
 
-.channelFilter {
+.channel-filter {
   background-color: #6441a5;
   border: 1px solid white;
   color: white;
@@ -138,7 +138,7 @@ div.tooltip-inner {
   width: 33%;
 }
 
-.channelFilter:hover {
+.channel-filter:hover {
   background-color: #8161BC;
   cursor: pointer;
 }
