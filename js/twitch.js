@@ -134,7 +134,7 @@ $(document).ready(function() {
   }
 
   /* Makes an API call to get information on a specific Twitch user and renders it on the page. */
-  const getUsers = (user) => {
+  const getUserInfo = (user) => {
     //$.getJSON('https://api.twitch.tv/kraken/users/' + user + '?client_id=skji05ppnsavrfz5ydkkttvbbzj2h29', function (userData) {
     $.getJSON(`https://api.twitch.tv/kraken/users/${user}?client_id=${CLIENT_ID}`, (userData) => {
 
@@ -200,8 +200,6 @@ $(document).ready(function() {
 
   createFilterActions();
   getFeaturedStreams();
-  for (let i = 0; i < USERNAMES.length; i++) {
-    getUsers(USERNAMES[i]);
-  }
+  USERNAMES.map((user) => getUserInfo(user));
 
 });
