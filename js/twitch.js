@@ -4,6 +4,8 @@ $(document).ready(function() {
 
   /* List of users to query. */
   const USERNAMES = ["freecodecamp", "magic", "channelfireball", "liveatthebike", "karltowns32", "celinalin", "nanonoko","wsopreplaystream","jonathanlittle", "esl_sc2", "ogamingsc2", "habathcx", "terakilobyte", "thomasballinger", "comster404", "brunofin", "somejunkuserthatdoesntexist"];
+  //const USERNAMES = ["comster404", "brunofin", "somejunkuserthatdoesntexist"];
+  //const USERNAMES = ["brunofin", "comster404"];
 
   const CLIENT_ID = "skji05ppnsavrfz5ydkkttvbbzj2h29";
   const TWITCH_URL = "https://www.twitch.tv";
@@ -144,11 +146,42 @@ console.log("X is "+x+" and Y is "+y);
     });
   }
 
+  const getUserInfo2 = (user) => {
+    console.log("Getting user info for " + user);
+    let x = 'https://api.twitch.tv/kraken/users/' + user + '?client_id=skji05ppnsavrfz5ydkkttvbbzj2h29';
+    console.log(x);
+    //{"error":"Not Found","status":404,"message":"User \"brunofin\" was not found"}
+    $.ajax({
+      type: "GET",
+      url: 'https://api.twitch.tv/kraken/users/'+user,
+      headers: {
+        'CLIENT-ID': 'skji05ppnsavrfz5ydkkttvbbzj2h29'
+      },
+      success: function(data, textStatus, jqXHR ){
+         console.log("Success");
+         console.log("Data:");
+         console.log(data);
+         console.log("Status: " + textStatus);
+         console.log("jqXHR: " + jqXHR);
+      },
+      error: function(jqXHR, textStatus, errorThrown ) {
+         console.log("Error");
+         console.log("ErrorThrown:");
+         console.log(errorThrown);
+         console.log("Status: " + textStatus);
+         console.log(jqXHR);
+         console.log(jqXHR.responseJSON);
+         console.log(jqXHR.responseJSON.status);
+      }
+    });
+
+  }
+
   /* Makes an API call to get information on a specific Twitch user and renders it on the page. */
   const getUserInfo = (user) => {
-    //$.getJSON('https://api.twitch.tv/kraken/users/' + user + '?client_id=skji05ppnsavrfz5ydkkttvbbzj2h29', function (userData) {
-    $.getJSON(`https://api.twitch.tv/kraken/users/${user}?client_id=${CLIENT_ID}`, (userData) => {
 
+    $.getJSON('https://api.twitch.tv/kraken/users/' + user + '?client_id=skji05ppnsavrfz5ydkkttvbbzj2h29', function (userData) {
+    //$.getJSON(`https://api.twitch.tv/kraken/streams/${user}?client_id=${CLIENT_ID}`, (userData) => {
       if (userData.status == 404) {
         console.log("404 " + userData.error + ": " + userData.message);
         return;
@@ -158,6 +191,9 @@ console.log("X is "+x+" and Y is "+y);
         console.log("User already in featured users.");
         return;
       }
+
+console.log("Adding " + userData.name);
+
       let channelItem = $('<li>');
       channelItem.attr('class', 'flex-item');
 
@@ -183,6 +219,8 @@ console.log("X is "+x+" and Y is "+y);
       $(nameColumn).appendTo(channelItem);
 
       $.getJSON(`https://api.twitch.tv/kraken/streams/${userData.name}?client_id=${CLIENT_ID}`, (streamData) => {
+console.log("Streamdata:");
+console.log(streamData);
         let statusColumn = $('<div>');
         statusColumn.attr('class', 'stream-status');
 
