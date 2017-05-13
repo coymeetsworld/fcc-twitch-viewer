@@ -7,6 +7,7 @@ $(document).ready(function() {
 
   const CLIENT_ID = "skji05ppnsavrfz5ydkkttvbbzj2h29";
   const TWITCH_URL = "https://www.twitch.tv";
+  let featuredUsernames = [];
 
   /* Creates click function for filtering out streams. */
   const createFilterActions = () => {
@@ -85,7 +86,7 @@ console.log("X is "+x+" and Y is "+y);
     $.getJSON(`https://api.twitch.tv/kraken/users/${name}?client_id=${CLIENT_ID}`, (userData) => {
       if (userData.bio != null && userData.bio != '') {
         console.log("Username: " + userData.name);
-        console.log("Bio: '" + userData.bio + "'");
+        featuredUsernames.push(userData.name);
         let span = $("<span>");
         span.attr('tooltip', userData.bio);
         span.attr("tooltip-position", "top");
@@ -139,6 +140,7 @@ console.log("X is "+x+" and Y is "+y);
 
 
       }
+      USERNAMES.map((user) => getUserInfo(user)); // So API call isn't made until featured streams finishes. This is done to prevent a duplicate channel from showing up (i.e. if one of the predefined channels ends up being featured at the time.)
     });
   }
 
@@ -152,6 +154,10 @@ console.log("X is "+x+" and Y is "+y);
         return;
       }
 
+      if (featuredUsernames.includes(userData.name)) {
+        console.log("User already in featured users.");
+        return;
+      }
       let channelItem = $('<li>');
       channelItem.attr('class', 'flex-item');
 
@@ -210,6 +216,5 @@ console.log("X is "+x+" and Y is "+y);
 
   createFilterActions();
   getFeaturedStreams();
-  USERNAMES.map((user) => getUserInfo(user));
 
 });
