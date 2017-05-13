@@ -74,18 +74,25 @@ $(document).ready(function() {
   }
 
 
+/*document.onmousemove = function(e){
+var x = e.pageX;
+var y = e.pageY;
+console.log("X is "+x+" and Y is "+y);
+};*/
+
   /* Pulls information about a featured streamer. */
   const getFeaturedInfo = (name) => {
     $.getJSON(`https://api.twitch.tv/kraken/users/${name}?client_id=${CLIENT_ID}`, (userData) => {
       if (userData.bio != null && userData.bio != '') {
         console.log("Username: " + userData.name);
         console.log("Bio: '" + userData.bio + "'");
-        let infoTag = $('<img>');
-        infoTag.attr('src', 'imgs/info.png');
-        infoTag.attr('data-toggle', 'tooltip');
-        infoTag.attr('title',userData.bio);
-        infoTag.appendTo($('#featured-stream'+name));
-        $('[data-toggle="tooltip"]').tooltip();
+        let span = $("<span>");
+        span.attr('tooltip', userData.bio);
+        span.attr("tooltip-position", "top");
+        let img = $('<img>');
+        img.attr('src', 'imgs/info.png');
+        img.appendTo(span);
+        span.appendTo($('#featured-stream'+name));
       }
     });
   }
@@ -129,6 +136,8 @@ $(document).ready(function() {
 
         $(channelItem).appendTo("#channels");
         getFeaturedInfo(stream.channel.display_name);
+
+
       }
     });
   }
@@ -156,13 +165,15 @@ $(document).ready(function() {
       $(createLink(userData.display_name, false)).appendTo(nameColumn);
 
       if (userData.bio && userData.bio !== '') {
-        let infoTag = $('<img>');
-        infoTag.attr('src', 'imgs/info.png');
-        infoTag.attr('data-toggle', 'tooltip');
-        infoTag.attr('title',userData.bio);
-        infoTag.appendTo(nameColumn);
-
+        let span = $("<span>");
+        span.attr('tooltip', userData.bio);
+        span.attr("tooltip-position", "top");
+        let img = $('<img>');
+        img.attr('src', 'imgs/info.png');
+        img.appendTo(span);
+        span.appendTo(nameColumn);
       }
+
       $(nameColumn).appendTo(channelItem);
 
       $.getJSON(`https://api.twitch.tv/kraken/streams/${userData.name}?client_id=${CLIENT_ID}`, (streamData) => {
@@ -193,7 +204,6 @@ $(document).ready(function() {
         }
 
         $(channelItem).appendTo("#channels");
-        $('[data-toggle="tooltip"]').tooltip(); // enable tooltips by hovering over info icon.
       });
     });
   }
