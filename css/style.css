@@ -1,6 +1,7 @@
 
 body {
   background-color: black;
+  color: #333;
 }
 
 #header {
@@ -41,30 +42,39 @@ body {
   float: left;
   height: 74px;
 }
+
 .user-icon {
   height: 75px;
   width: 75px;
 }
+
 .streamer-name {
-  font-size: 1.2em;
+  font-size: 1.1em;
   margin-left: 85px;
   margin-top: 10px;
 }
+
+strong {
+  font-weight: 700;
+}
+
 .streamer-name a {
   color: #fff;
   text-decoration:none;
 }
+
 .streamer-name img {
   margin-left: 7px;
   width: 16px;
 }
+
 .streamer-name a:hover {
   color: #fff;
   text-decoration:none;
 }
 
 .stream-status {
-  font-size: 0.9em;
+  font-size: 0.8em;
   margin-left: 95px;
   margin-top: 7px;
 }
@@ -146,12 +156,15 @@ body {
   width: 0;
 }
 
+
+/* Code below is used for tooltips. */
+
 span {
   position: absolute;
 }
 
 [tooltip]{
-  margin: 0;
+  margin: 0 0 0 -12px;
 }
 
 [tooltip]::before {

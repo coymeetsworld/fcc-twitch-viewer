@@ -4,8 +4,6 @@ $(document).ready(function() {
 
   /* List of users to query. */
   const USERNAMES = ["freecodecamp", "maximilian_dood", "magic", "channelfireball", "liveatthebike", "karltowns32", "celinalin", "nanonoko","wsopreplaystream","jonathanlittle", "esl_sc2", "ogamingsc2", "habathcx", "terakilobyte", "thomasballinger", "comster404", "brunofin" ];
-  //const USERNAMES = ["maximilian_dood", "esl_sc2", "ogamingsc2" ];
-  //const USERNAMES = ["maximilian_dood"];
 
   const CLIENT_ID = "skji05ppnsavrfz5ydkkttvbbzj2h29";
   const TWITCH_URL = "https://www.twitch.tv";
@@ -39,7 +37,6 @@ $(document).ready(function() {
   const createUserImage = (src) => {
     let imageTag = $("<img>");
     imageTag.addClass("user-icon");
-
     if (src != null) imageTag.attr("src", src);
     else imageTag.attr("src", NO_USER_ICON_URL);
     return imageTag;
@@ -54,8 +51,9 @@ $(document).ready(function() {
   }
 
 
-
-  /* Creates the link for the streamer to go to their Twitch page. Will also display if its a featured stream or not.*/
+  /*
+    Creates the link for the streamer to go to their Twitch page. Will also display if its a featured stream or not.
+  */
   const createTitle = (streamerName, isFeatured) => {
     let link = createLink(streamerName);
     if (isFeatured) {
@@ -66,7 +64,9 @@ $(document).ready(function() {
     return link;
   }
 
-
+  /*
+    Creates the tooltip image that will lay next to the streamer's name if there is bio data available.
+  */
   const createTooltip = (bio) => {
     let span = $("<span>");
     span.attr("tooltip", bio);
@@ -77,6 +77,7 @@ $(document).ready(function() {
     return span;
   }
 
+
   const createUserIcon = (logo = null) => {
     let iconColumn = $('<div>');
     iconColumn.attr('class', 'streamer-icon');
@@ -84,6 +85,10 @@ $(document).ready(function() {
     return iconColumn;
   }
 
+
+  /*
+    Lists streamer's name and bio information if available.
+  */
   const createStreamHeader = (username, bio = null, isFeatured = false) => {
     let nameColumn = $("<div>");
     nameColumn.attr("class", "streamer-name");
@@ -93,8 +98,11 @@ $(document).ready(function() {
     return nameColumn;
   }
 
+  
+  /*
+    Creates a div that shows the status of a channel.
+  */
   const createStreamStatus = (status, channel = null) => {
-
     let statusColumn = $("<div>");
     statusColumn.attr("class", "stream-status");
 
@@ -113,7 +121,9 @@ $(document).ready(function() {
   }
 
 
-  /* Creates the image tag for showing the preview of the stream. Only used when a stream is live, there are no previews on offline streams. */
+  /* 
+    Creates the image tag for showing the preview of the stream. Only used when a stream is live, there are no previews on offline streams.
+  */
   const createPreviewImage = (streamerName, src) => {
     let streamPreview = $("<div>");
     streamPreview.addClass("stream-preview");
@@ -125,8 +135,10 @@ $(document).ready(function() {
     return streamPreview;
   }
 
-
-  const createPreviewInfo = (viewers) => {
+  /*
+    Lists the number of viewers currently watching a livestream.
+  */
+  const createViewerInfo = (viewers) => {
     let viewersDiv = $("<div>");
     viewersDiv.addClass("stream-preview-info");
     viewersDiv.html(`Viewers: ${viewers}`);
@@ -134,32 +146,32 @@ $(document).ready(function() {
   }
 
   const createChannelItem = (streamData, userData, isFeatured) => {
-    console.log("stream");
-    console.log(streamData);
-    console.log("user");
-    console.log(userData);
     let channelItem = $('<li>');
     channelItem.attr('class', 'flex-item');
 
     createUserIcon(userData.logo).appendTo(channelItem);
     createStreamHeader(userData.display_name, userData.bio, isFeatured).appendTo(channelItem);
+
     if (!streamData) {
       channelItem.addClass("channel-offline");
       createStreamStatus("offline").appendTo(channelItem);
+
     } else if (isFeatured) {
       channelItem.addClass("channel-featured");
       createStreamStatus("online", streamData.channel, isFeatured).appendTo(channelItem);
       createPreviewImage(userData.display_name, streamData.preview.large).appendTo(channelItem);
-      createPreviewInfo(streamData.viewers).appendTo(channelItem);
+      createViewerInfo(streamData.viewers).appendTo(channelItem);
+
     } else {
       channelItem.addClass("channel-online");
       createStreamStatus("online", streamData.channel).appendTo(channelItem);
       createPreviewImage(userData.display_name, streamData.preview.large).appendTo(channelItem);
-      createPreviewInfo(streamData.viewers).appendTo(channelItem);
+      createViewerInfo(streamData.viewers).appendTo(channelItem);
     }
- 
+
     return channelItem;
   }
+
 
   const createClosedChannelItem = (username) => {
     let channelItem = $('<li>');
@@ -180,7 +192,6 @@ $(document).ready(function() {
     $.getJSON(`https://api.twitch.tv/kraken/streams/featured?client_id=${CLIENT_ID}`, (featuredData) => {
 
       featuredData.featured.slice(0,5).map((data) => {
-
         $.ajax({
           type: "GET",
           url: `https://api.twitch.tv/kraken/users/${data.stream.channel.name}`,
@@ -188,7 +199,7 @@ $(document).ready(function() {
             'CLIENT-ID': 'skji05ppnsavrfz5ydkkttvbbzj2h29'
           },
           success: function(userData, textStatus, jqXHR ){
-            createChannelItem(data.stream, userData, false).appendTo("#channels");
+            createChannelItem(data.stream, userData, true).appendTo("#channels");
           },
           error: function(jqXHR, textStatus, errorThrown ) {
             console.log(errorThrown);
@@ -198,19 +209,18 @@ $(document).ready(function() {
         });
       });
 
-      USERNAMES.map((user) => getUserInfo(user)); // So API call isn't made until featured streams finishes. This is done to prevent a duplicate channel from showing up (i.e. if one of the predefined channels ends up being featured at the time.)
+      // So API call isn't made until featured streams finishes.
+      //This is done to prevent a duplicate channel from showing up (i.e. if one of the predefined channels ends up being featured at the time.)
+      USERNAMES.map((user) => getUserInfo(user)); 
     });
   }
 
 
   const renderUserData = (userName, userData) => {
 
-
       if (featuredUsernames.includes(userName)) return;
 
-
       let channelItem;
-      //need to keep if statement so ajax isn't run here?
       if (userData.hasOwnProperty("status")) {
         if (userData.status == 422) {
           channelItem = createClosedChannelItem(userName);
@@ -238,7 +248,6 @@ $(document).ready(function() {
          console.log(jqXHR);
       }
     });
-
   }
 
 
@@ -258,10 +267,8 @@ $(document).ready(function() {
          renderUserData(user, jqXHR.responseJSON);
       }
     });
-
   }
 
   createFilterActions();
   getFeaturedStreams();
-
 });
