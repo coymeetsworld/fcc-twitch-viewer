@@ -13,21 +13,18 @@ $(document).ready(function() {
   /* Creates click function for filtering out streams. */
   const createFilterActions = () => {
     $("#filter-none").click(function() {
-      console.log("Click no filter");
       $(".channel-featured").removeClass("hidden");
       $(".channel-online").removeClass("hidden");
       $(".channel-offline").removeClass("hidden");
       $(".channel-closed").removeClass("hidden");
     });
     $("#filter-offline").click(function() {
-      console.log("Click offline filter");
       $(".channel-online").addClass("hidden");
       $(".channel-featured").addClass("hidden");
       $(".channel-offline").removeClass("hidden");
       $(".channel-closed").removeClass("hidden");
     });
     $("#filter-online").click(function() {
-      console.log("Click online filter");
       $(".channel-offline").addClass("hidden");
       $(".channel-closed").addClass("hidden");
       $(".channel-online").removeClass("hidden");
@@ -39,22 +36,24 @@ $(document).ready(function() {
   /* Creates the image tag for the user. If they do not have an image a default will be used in place.*/
   const createUserImage = (src) => {
     let imageTag = $('<img>');
-    imageTag.addClass('userIcon');
+    imageTag.addClass('user-icon');
 
-    if (src != null) {
-      imageTag.attr('src', src);
-    } else {
-      imageTag.attr('src', NO_USER_ICON_URL);
-    }
+    if (src != null) imageTag.attr('src', src);
+    else imageTag.attr('src', NO_USER_ICON_URL);
     return imageTag;
   }
 
 
-  /* Creates the image tag for showing the preview of the stream. Only used when a stream is live, there are no previews on offline streams. */
-  const createPreviewImage = (streamerName, src) => {
+  const createLink = (streamerName) => {
     let link = $('<a>');
     link.attr('href', `${TWITCH_URL}/${streamerName}`);
     link.attr('target', '_blank');
+    return link;
+  }
+
+  /* Creates the image tag for showing the preview of the stream. Only used when a stream is live, there are no previews on offline streams. */
+  const createPreviewImage = (streamerName, src) => {
+    let link = createLink(streamerName);
     let imageTag = $('<img>');
     imageTag.attr('src', src);
     link.html(imageTag);
@@ -63,10 +62,8 @@ $(document).ready(function() {
 
 
   /* Creates the link for the streamer to go to their Twitch page. Will also display if its a featured stream or not.*/
-  const createLink = (streamerName, isFeatured) => {
-    let link = $('<a>');
-    link.attr('href', `${TWITCH_URL}/${streamerName}`);
-    link.attr('target', '_blank');
+  const createTitle = (streamerName, isFeatured) => {
+    let link = createLink(streamerName);
     if (isFeatured) {
       link.html("<strong>Featured:</strong> " + streamerName);
     } else {
@@ -75,12 +72,6 @@ $(document).ready(function() {
     return link;
   }
 
-
-/*document.onmousemove = function(e){
-var x = e.pageX;
-var y = e.pageY;
-console.log("X is "+x+" and Y is "+y);
-};*/
 
   /* Pulls information about a featured streamer. */
   const getFeaturedInfo = (name) => {
@@ -118,7 +109,7 @@ console.log("X is "+x+" and Y is "+y);
 
         let nameColumn = $('<div>');
         nameColumn.attr('class', 'streamer-name');
-        $(createLink(stream.channel.display_name, true)).appendTo(nameColumn);
+        $(createTitle(stream.channel.display_name, true)).appendTo(nameColumn);
         nameColumn.attr('id', 'featured-stream' + stream.channel.display_name);
         $(nameColumn).appendTo(channelItem);
 
@@ -193,8 +184,8 @@ console.log("X is "+x+" and Y is "+y);
 
       let nameColumn = $('<div>');
       nameColumn.attr('class', 'streamer-name');
-      //$(createLink(userData.display_name, false)).appendTo(nameColumn);
-      $(createLink(userName, false)).appendTo(nameColumn);
+      //$(createTitle(userData.display_name, false)).appendTo(nameColumn);
+      $(createTitle(userName, false)).appendTo(nameColumn);
 
       if (userData.bio && userData.bio !== '') {
         let span = $("<span>");
@@ -307,7 +298,7 @@ console.log("X is "+x+" and Y is "+y);
 
       let nameColumn = $('<div>');
       nameColumn.attr('class', 'streamer-name');
-      $(createLink(userData.display_name, false)).appendTo(nameColumn);
+      $(createTitle(userData.display_name, false)).appendTo(nameColumn);
 
       if (userData.bio && userData.bio !== '') {
         let span = $("<span>");
