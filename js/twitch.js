@@ -43,6 +43,14 @@ $(document).ready(function() {
   }
 
 
+  const createUserIcon = (logo = null) => {
+    let iconColumn = $('<div>');
+    iconColumn.attr('class', 'streamer-icon');
+    $(createUserImage(logo)).appendTo(iconColumn);
+    return iconColumn;
+  }
+
+
   const createLink = (streamerName) => {
     let link = $("<a>");
     link.attr("href", `${TWITCH_URL}/${streamerName}`);
@@ -63,6 +71,7 @@ $(document).ready(function() {
     }
     return link;
   }
+  
 
   /*
     Creates the tooltip image that will lay next to the streamer's name if there is bio data available.
@@ -78,14 +87,6 @@ $(document).ready(function() {
   }
 
 
-  const createUserIcon = (logo = null) => {
-    let iconColumn = $('<div>');
-    iconColumn.attr('class', 'streamer-icon');
-    $(createUserImage(logo)).appendTo(iconColumn);
-    return iconColumn;
-  }
-
-
   /*
     Lists streamer's name and bio information if available.
   */
@@ -98,7 +99,7 @@ $(document).ready(function() {
     return nameColumn;
   }
 
-  
+
   /*
     Creates a div that shows the status of a channel.
   */
@@ -184,40 +185,7 @@ $(document).ready(function() {
   }
 
 
-  /* Makes an API call to get the top 5 featured streams on Twitch and render them on the page.
-    TODO: can't limit the rate with the client_id, investigate
-    https://api.twitch.tv/kraken/streams/featured?client_id=skji05ppnsavrfz5ydkkttvbbzj2h29?limit=5&offset=0
-  */
-  const getFeaturedStreams = () => {
-    $.getJSON(`https://api.twitch.tv/kraken/streams/featured?client_id=${CLIENT_ID}`, (featuredData) => {
-
-      featuredData.featured.slice(0,5).map((data) => {
-        $.ajax({
-          type: "GET",
-          url: `https://api.twitch.tv/kraken/users/${data.stream.channel.name}`,
-          headers: {
-            'CLIENT-ID': 'skji05ppnsavrfz5ydkkttvbbzj2h29'
-          },
-          success: function(userData, textStatus, jqXHR ){
-            createChannelItem(data.stream, userData, true).appendTo("#channels");
-          },
-          error: function(jqXHR, textStatus, errorThrown ) {
-            console.log(errorThrown);
-            console.log("Status: " + textStatus);
-            console.log(jqXHR);
-          }
-        });
-      });
-
-      // So API call isn't made until featured streams finishes.
-      //This is done to prevent a duplicate channel from showing up (i.e. if one of the predefined channels ends up being featured at the time.)
-      USERNAMES.map((user) => getUserInfo(user)); 
-    });
-  }
-
-
   const renderUserData = (userName, userData) => {
-
       if (featuredUsernames.includes(userName)) return;
 
       let channelItem;
@@ -268,6 +236,41 @@ $(document).ready(function() {
       }
     });
   }
+
+
+  /* Makes an API call to get the top 5 featured streams on Twitch and render them on the page.
+    TODO: can't limit the rate with the client_id, investigate
+    https://api.twitch.tv/kraken/streams/featured?client_id=skji05ppnsavrfz5ydkkttvbbzj2h29?limit=5&offset=0
+  */
+  const getFeaturedStreams = () => {
+    $.getJSON(`https://api.twitch.tv/kraken/streams/featured?client_id=${CLIENT_ID}`, (featuredData) => {
+
+      featuredData.featured.slice(0,5).map((data) => {
+        $.ajax({
+          type: "GET",
+          url: `https://api.twitch.tv/kraken/users/${data.stream.channel.name}`,
+          headers: {
+            'CLIENT-ID': 'skji05ppnsavrfz5ydkkttvbbzj2h29'
+          },
+          success: function(userData, textStatus, jqXHR ){
+            createChannelItem(data.stream, userData, true).appendTo("#channels");
+          },
+          error: function(jqXHR, textStatus, errorThrown ) {
+            console.log(errorThrown);
+            console.log("Status: " + textStatus);
+            console.log(jqXHR);
+          }
+        });
+      });
+
+      // So API call isn't made until featured streams finishes.
+      //This is done to prevent a duplicate channel from showing up (i.e. if one of the predefined channels ends up being featured at the time.)
+      USERNAMES.map((user) => getUserInfo(user)); 
+    });
+  }
+
+
+
 
   createFilterActions();
   getFeaturedStreams();
