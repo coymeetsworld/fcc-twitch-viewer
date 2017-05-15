@@ -77,18 +77,6 @@ $(document).ready(function() {
     return span;
   }
 
-
-  /* Pulls information about a featured streamer. */
-  const getFeaturedInfo = (name) => {
-    $.getJSON(`https://api.twitch.tv/kraken/users/${name}?client_id=${CLIENT_ID}`, (userData) => {
-      if (userData.bio != null && userData.bio != '') {
-        console.log("Username: " + userData.name);
-        featuredUsernames.push(userData.name);
-        createTooltip(userData.bio).appendTo($(`#featured-stream${name}`));
-      }
-    });
-  }
-
   const createUserIcon = (logo = null) => {
     let iconColumn = $('<div>');
     iconColumn.attr('class', 'streamer-icon');
@@ -145,8 +133,6 @@ $(document).ready(function() {
     return viewersDiv;
   }
 
-  // from featured users: featuredData.featured[i].stream.channel
-  // from normal users: userData
   const createChannelItem = (streamData, userData, isFeatured) => {
     console.log("stream");
     console.log(streamData);
@@ -192,18 +178,26 @@ $(document).ready(function() {
   */
   const getFeaturedStreams = () => {
     $.getJSON(`https://api.twitch.tv/kraken/streams/featured?client_id=${CLIENT_ID}`, (featuredData) => {
-      //console.log(featuredData.featured.slice(0,5));
 
-      let stream;
-      for (let i = 0; i < 5; i++) {
-        stream = featuredData.featured[i].stream;
-        let channelItem = createChannelItem(stream, stream.channel, true);
+      featuredData.featured.slice(0,5).map((data) => {
 
-        $(channelItem).appendTo("#channels");
-        getFeaturedInfo(stream.channel.display_name);
+        $.ajax({
+          type: "GET",
+          url: `https://api.twitch.tv/kraken/users/${data.stream.channel.name}`,
+          headers: {
+            'CLIENT-ID': 'skji05ppnsavrfz5ydkkttvbbzj2h29'
+          },
+          success: function(userData, textStatus, jqXHR ){
+            createChannelItem(data.stream, userData, false).appendTo("#channels");
+          },
+          error: function(jqXHR, textStatus, errorThrown ) {
+            console.log(errorThrown);
+            console.log("Status: " + textStatus);
+            console.log(jqXHR);
+          }
+        });
+      });
 
-
-      }
       USERNAMES.map((user) => getUserInfo(user)); // So API call isn't made until featured streams finishes. This is done to prevent a duplicate channel from showing up (i.e. if one of the predefined channels ends up being featured at the time.)
     });
   }
