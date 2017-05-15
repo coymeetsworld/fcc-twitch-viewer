@@ -96,14 +96,14 @@ $(document).ready(function() {
     });
   }
 
-  const createUserIcon = (logo) => {
+  const createUserIcon = (logo = null) => {
     let iconColumn = $('<div>');
     iconColumn.attr('class', 'streamer-icon');
     $(createUserImage(logo)).appendTo(iconColumn);
     return iconColumn;
   }
 
-  const createStreamName = (username, bio, isFeatured) => {
+  const createStreamHeader = (username, bio = null, isFeatured = false) => {
     let nameColumn = $("<div>");
     nameColumn.attr("class", "streamer-name");
     createTitle(username, isFeatured).appendTo(nameColumn);
@@ -112,13 +112,44 @@ $(document).ready(function() {
     return nameColumn;
   }
 
+  const createStreamStatus = (status, channel = null) => {
+
+    let statusColumn = $("<div>");
+    statusColumn.attr("class", "stream-status");
+
+    switch (status) {
+      case "closed":
+        statusColumn.text("Account closed");
+        break;
+      case "offline":
+        statusColumn.text("Offline");
+        break;
+      case "online":
+        statusColumn.text(`${channel.game} : ${channel.status}`);
+        break;
+    }
+    return statusColumn;
+  }
+
+
+
+
   // from featured users: featuredData.featured[i].stream.channel
   // from normal users: userData
   const createChannelItem = (streamData, isFeatured) => {
     let channelItem = $('<li>');
     channelItem.attr('class', 'flex-item');
+
     createUserIcon(streamData.logo).appendTo(channelItem);
-    createStreamName(streamData.display_name, streamData.bio, isFeatured).appendTo(channelItem);
+    createStreamHeader(streamData.display_name, streamData.bio, isFeatured).appendTo(channelItem);
+    return channelItem;
+  }
+
+  const createClosedChannelItem = (username) => {
+    let channelItem = $('<li>');
+    channelItem.attr('class', 'flex-item');
+    createUserIcon().appendTo(channelItem);
+    createStreamHeader(username).appendTo(channelItem);
     return channelItem;
   }
 
@@ -136,18 +167,15 @@ $(document).ready(function() {
         stream = featuredData.featured[i].stream;
 
         let channelItem = createChannelItem(featuredData.featured[i].stream.channel, true);
+        channelItem.addClass("channel-featured");
+        createStreamStatus("online", stream.channel, true).appendTo(channelItem);
 
-        /*let nameColumn = $('<div>');
-        nameColumn.attr('class', 'streamer-name');
-        $(createTitle(stream.channel.display_name, true)).appendTo(nameColumn);
-        nameColumn.attr('id', 'featured-stream' + stream.channel.display_name);
-        $(nameColumn).appendTo(channelItem);*/
-
-        let statusColumn = $('<div>');
+        /*let statusColumn = $('<div>');
         statusColumn.attr('class', 'stream-status');
         channelItem.addClass('channel-featured');
         statusColumn.text(stream.channel.game + ": " + stream.channel.status);
-        $(statusColumn).appendTo(channelItem);
+        $(statusColumn).appendTo(channelItem);*/
+
         let streamPreview = $('<div>');
         $(createPreviewImage(stream.channel.display_name, stream.preview.large)).appendTo(streamPreview);
         streamPreview.addClass('stream-preview');
@@ -168,29 +196,26 @@ $(document).ready(function() {
 
 
   const renderStreamData = (streamData, userData, channelItem) => {
-    let statusColumn = $('<div>');
-        statusColumn.attr('class', 'stream-status');
 
-        if (streamData.stream === null) {
-          channelItem.addClass('channel-offline');
-          statusColumn.text('Offline');
-          $(statusColumn).appendTo(channelItem);
-        } else {
-          channelItem.addClass('channel-online');
-          statusColumn.text(streamData.stream.channel.game + ": " + streamData.stream.channel.status);
-          $(statusColumn).appendTo(channelItem);
-          let streamPreview = $('<div>');
-          $(createPreviewImage(userData.name, streamData.stream.preview.large)).appendTo(streamPreview);
-          streamPreview.addClass('stream-preview');
-          $(streamPreview).appendTo(channelItem);
-          let streamPreviewInfo = $('<div>');
-          streamPreviewInfo.addClass('stream-preview-info');
-          streamPreviewInfo.html("Viewers: " + streamData.stream.viewers);
-          $(streamPreviewInfo).appendTo(channelItem);
-        }
+    if (streamData.stream === null) {
+      channelItem.addClass("channel-offline");
+      createStreamStatus("offline").appendTo(channelItem);
 
-        $(channelItem).appendTo("#channels");
+    } else {
+      channelItem.addClass("channel-online");
+      createStreamStatus("online", userData.channel).appendTo(channelItem);
 
+      let streamPreview = $('<div>');
+      $(createPreviewImage(userData.name, streamData.stream.preview.large)).appendTo(streamPreview);
+      streamPreview.addClass('stream-preview');
+      $(streamPreview).appendTo(channelItem);
+      let streamPreviewInfo = $('<div>');
+      streamPreviewInfo.addClass('stream-preview-info');
+      streamPreviewInfo.html("Viewers: " + streamData.stream.viewers);
+      $(streamPreviewInfo).appendTo(channelItem);
+    }
+
+    $(channelItem).appendTo("#channels");
   }
 
   const renderUserData = (userName, userData) => {
@@ -198,29 +223,29 @@ $(document).ready(function() {
 
       if (featuredUsernames.includes(userName)) return;
 
-      let channelItem = createChannelItem(userData, false);
 
-      /*let nameColumn = $('<div>');
-      nameColumn.attr('class', 'streamer-name');
-      //$(createTitle(userData.display_name, false)).appendTo(nameColumn);
-      $(createTitle(userName, false)).appendTo(nameColumn);*/
-
-      /*if (userData.bio && userData.bio !== '') {
-        createTooltip(userData.bio).appendTo(nameColumn);
-      }
-
-      $(nameColumn).appendTo(channelItem);*/
-
-      if (userData.hasOwnProperty("status") && userData.status == 422) {
-          let statusColumn = $('<div>'); //repeated code in renderStreamData, should refactor
+      let channelItem;
+      //need to keep if statement so ajax isn't run here?
+      if (userData.hasOwnProperty("status")) {
+        if (userData.status == 422) {
+          channelItem = createClosedChannelItem(userName);
+          createStreamStatus("closed").appendTo(channelItem);
+          channelItem.addClass("channel-closed");
+          $(channelItem).appendTo("#channels");
+        }
+        else if (userData.status == 404) {
+          console.log(`${userData.status} ${userData.error}: ${userData.message}, not creating an entry.`);
+        }
+          /*let statusColumn = $('<div>'); //repeated code in renderStreamData, should refactor
           statusColumn.attr('class', 'stream-status');
 
           channelItem.addClass('channel-closed');
           statusColumn.text('Account closed');
           $(statusColumn).appendTo(channelItem);
-          $(channelItem).appendTo("#channels");
+          $(channelItem).appendTo("#channels");*/
           return;
       }
+      channelItem = createChannelItem(userData, false);
 
     $.ajax({
       type: "GET",
