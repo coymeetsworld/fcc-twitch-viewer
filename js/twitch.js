@@ -24,7 +24,7 @@ $(document).ready(function() {
       $(".channel-offline").removeClass("hidden");
       $(".channel-closed").removeClass("hidden");
     });
-    $("#filter-online").click(function() {
+    $("#filter-online").click(function() { 
       $(".channel-offline").addClass("hidden");
       $(".channel-closed").addClass("hidden");
       $(".channel-online").removeClass("hidden");
@@ -64,11 +64,8 @@ $(document).ready(function() {
   */
   const createTitle = (streamerName, isFeatured) => {
     let link = createLink(streamerName);
-    if (isFeatured) {
-      link.html("<strong>Featured:</strong> " + streamerName);
-    } else {
-      link.html(streamerName);
-    }
+    if (isFeatured) link.html("<strong>Featured:</strong> " + streamerName);
+    else link.html(streamerName);
     return link;
   }
   
@@ -186,19 +183,19 @@ $(document).ready(function() {
 
 
   const renderUserData = (userName, userData) => {
-      if (featuredUsernames.includes(userName)) return;
+    if (featuredUsernames.includes(userName)) return;
 
-      let channelItem;
-      if (userData.hasOwnProperty("status")) {
-        if (userData.status == 422) {
-          channelItem = createClosedChannelItem(userName);
-          $(channelItem).appendTo("#channels");
-        }
-        else if (userData.status == 404) {
-          console.log(`${userData.status} ${userData.error}: ${userData.message}, not creating an entry.`);
-        }
-        return;
+    let channelItem;
+    if (userData.hasOwnProperty("status")) {
+      if (userData.status == 422) {
+        channelItem = createClosedChannelItem(userName);
+        $(channelItem).appendTo("#channels");
       }
+      else if (userData.status == 404) {
+        console.log(`${userData.status} ${userData.error}: ${userData.message}, not creating an entry.`);
+      }
+      return;
+    }
 
     $.ajax({
       type: "GET",
@@ -207,13 +204,13 @@ $(document).ready(function() {
         'CLIENT-ID': 'skji05ppnsavrfz5ydkkttvbbzj2h29'
       },
       success: function(streamData, textStatus, jqXHR ){
-         channelItem = createChannelItem(streamData.stream, userData, false);
-         $(channelItem).appendTo("#channels");
+        channelItem = createChannelItem(streamData.stream, userData, false);
+        $(channelItem).appendTo("#channels");
       },
       error: function(jqXHR, textStatus, errorThrown ) {
-         console.log(errorThrown);
-         console.log("Status: " + textStatus);
-         console.log(jqXHR);
+        console.log(errorThrown);
+        console.log("Status: " + textStatus);
+        console.log(jqXHR);
       }
     });
   }
@@ -229,10 +226,10 @@ $(document).ready(function() {
         'CLIENT-ID': 'skji05ppnsavrfz5ydkkttvbbzj2h29'
       },
       success: function(data, textStatus, jqXHR ){
-         renderUserData(user, data);
+        renderUserData(user, data);
       },
       error: function(jqXHR, textStatus, errorThrown ) {
-         renderUserData(user, jqXHR.responseJSON);
+        renderUserData(user, jqXHR.responseJSON);
       }
     });
   }
@@ -244,7 +241,6 @@ $(document).ready(function() {
   */
   const getFeaturedStreams = () => {
     $.getJSON(`https://api.twitch.tv/kraken/streams/featured?client_id=${CLIENT_ID}`, (featuredData) => {
-
       featuredData.featured.slice(0,5).map((data) => {
         $.ajax({
           type: "GET",
@@ -265,12 +261,9 @@ $(document).ready(function() {
 
       // So API call isn't made until featured streams finishes.
       //This is done to prevent a duplicate channel from showing up (i.e. if one of the predefined channels ends up being featured at the time.)
-      USERNAMES.map((user) => getUserInfo(user)); 
+      USERNAMES.map((user) => getUserInfo(user));
     });
   }
-
-
-
 
   createFilterActions();
   getFeaturedStreams();
