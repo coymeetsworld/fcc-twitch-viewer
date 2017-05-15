@@ -44,8 +44,8 @@ $(document).ready(function() {
 
 
   const createUserIcon = (logo = null) => {
-    let iconColumn = $('<div>');
-    iconColumn.attr('class', 'streamer-icon');
+    let iconColumn = $("<div>");
+    iconColumn.attr("class", "streamer-icon");
     $(createUserImage(logo)).appendTo(iconColumn);
     return iconColumn;
   }
@@ -144,8 +144,8 @@ $(document).ready(function() {
   }
 
   const createChannelItem = (streamData, userData, isFeatured) => {
-    let channelItem = $('<li>');
-    channelItem.attr('class', 'flex-item');
+    let channelItem = $("<li>");
+    channelItem.attr("class", "flex-item");
 
     createUserIcon(userData.logo).appendTo(channelItem);
     createStreamHeader(userData.display_name, userData.bio, isFeatured).appendTo(channelItem);
@@ -172,8 +172,8 @@ $(document).ready(function() {
 
 
   const createClosedChannelItem = (username) => {
-    let channelItem = $('<li>');
-    channelItem.attr('class', 'flex-item');
+    let channelItem = $("<li>");
+    channelItem.attr("class", "flex-item");
     createUserIcon().appendTo(channelItem);
     createStreamHeader(username).appendTo(channelItem);
     channelItem.addClass("channel-closed");
@@ -199,9 +199,9 @@ $(document).ready(function() {
 
     $.ajax({
       type: "GET",
-      url: 'https://api.twitch.tv/kraken/streams/'+userData.name,
+      url: `https://api.twitch.tv/kraken/streams/${userData.name}`,
       headers: {
-        'CLIENT-ID': 'skji05ppnsavrfz5ydkkttvbbzj2h29'
+        "CLIENT-ID": "skji05ppnsavrfz5ydkkttvbbzj2h29"
       },
       success: function(streamData, textStatus, jqXHR ){
         channelItem = createChannelItem(streamData.stream, userData, false);
@@ -221,9 +221,9 @@ $(document).ready(function() {
 
     $.ajax({
       type: "GET",
-      url: 'https://api.twitch.tv/kraken/users/'+user,
+      url: `https://api.twitch.tv/kraken/users/${user}`,
       headers: {
-        'CLIENT-ID': 'skji05ppnsavrfz5ydkkttvbbzj2h29'
+        "CLIENT-ID": "skji05ppnsavrfz5ydkkttvbbzj2h29"
       },
       success: function(data, textStatus, jqXHR ){
         renderUserData(user, data);
@@ -246,7 +246,7 @@ $(document).ready(function() {
           type: "GET",
           url: `https://api.twitch.tv/kraken/users/${data.stream.channel.name}`,
           headers: {
-            'CLIENT-ID': 'skji05ppnsavrfz5ydkkttvbbzj2h29'
+            "CLIENT-ID": "skji05ppnsavrfz5ydkkttvbbzj2h29"
           },
           success: function(userData, textStatus, jqXHR ){
             createChannelItem(data.stream, userData, true).appendTo("#channels");
