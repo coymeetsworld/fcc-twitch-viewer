@@ -209,3 +209,22 @@ span {
 [tooltip]:hover::after,[tooltip]:hover::before {
    opacity:1
 }
+
+/* Link to GitHub */
+a {
+  color: #0645ad;
+  font-size: 0.9em;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Link to GitHub */
+#my-about {
+  font-size: 0.9em;
+  margin-top: 1em;
+  margin-bottom: 2em;
+  text-align: center;
+}
