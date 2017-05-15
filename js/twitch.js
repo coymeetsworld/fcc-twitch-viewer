@@ -3,7 +3,7 @@ $(document).ready(function() {
   const NO_USER_ICON_URL= "imgs/twitchDefaultIcon.png";
 
   /* List of users to query. */
-  const USERNAMES = ["freecodecamp", "yoda", "magic", "channelfireball", "liveatthebike", "karltowns32", "celinalin", "nanonoko","wsopreplaystream","jonathanlittle", "esl_sc2", "ogamingsc2", "habathcx", "terakilobyte", "thomasballinger", "comster404", "brunofin" ];
+  const USERNAMES = ["freecodecamp", "maximilian_dood", "magic", "channelfireball", "liveatthebike", "karltowns32", "celinalin", "nanonoko","wsopreplaystream","jonathanlittle", "esl_sc2", "ogamingsc2", "habathcx", "terakilobyte", "thomasballinger", "comster404", "brunofin" ];
 
   const CLIENT_ID = "skji05ppnsavrfz5ydkkttvbbzj2h29";
   const TWITCH_URL = "https://www.twitch.tv";
@@ -196,14 +196,13 @@ $(document).ready(function() {
 
 
   const renderStreamData = (streamData, userData, channelItem) => {
-
     if (streamData.stream === null) {
       channelItem.addClass("channel-offline");
       createStreamStatus("offline").appendTo(channelItem);
 
     } else {
       channelItem.addClass("channel-online");
-      createStreamStatus("online", userData.channel).appendTo(channelItem);
+      createStreamStatus("online", streamData.stream.channel).appendTo(channelItem);
 
       let streamPreview = $('<div>');
       $(createPreviewImage(userData.name, streamData.stream.preview.large)).appendTo(streamPreview);
