@@ -96,28 +96,52 @@ $(document).ready(function() {
     });
   }
 
+  const createUserIcon = (logo) => {
+    let iconColumn = $('<div>');
+    iconColumn.attr('class', 'streamer-icon');
+    $(createUserImage(logo)).appendTo(iconColumn);
+    return iconColumn;
+  }
+
+  const createStreamName = (username, bio, isFeatured) => {
+    let nameColumn = $("<div>");
+    nameColumn.attr("class", "streamer-name");
+    createTitle(username, isFeatured).appendTo(nameColumn);
+    nameColumn.attr("id", `featured-stream${username}`);
+    if (bio && bio !== "") createTooltip(bio).appendTo(nameColumn);
+    return nameColumn;
+  }
+
+  // from featured users: featuredData.featured[i].stream.channel
+  // from normal users: userData
+  const createChannelItem = (streamData, isFeatured) => {
+    let channelItem = $('<li>');
+    channelItem.attr('class', 'flex-item');
+    createUserIcon(streamData.logo).appendTo(channelItem);
+    createStreamName(streamData.display_name, streamData.bio, isFeatured).appendTo(channelItem);
+    return channelItem;
+  }
+
+
   /* Makes an API call to get the top 5 featured streams on Twitch and render them on the page.
     TODO: can't limit the rate with the client_id, investigate
     https://api.twitch.tv/kraken/streams/featured?client_id=skji05ppnsavrfz5ydkkttvbbzj2h29?limit=5&offset=0
   */
   const getFeaturedStreams = () => {
     $.getJSON(`https://api.twitch.tv/kraken/streams/featured?client_id=${CLIENT_ID}`, (featuredData) => {
+      //console.log(featuredData.featured.slice(0,5));
+
       let stream;
       for (let i = 0; i < 5; i++) {
         stream = featuredData.featured[i].stream;
 
-        let channelItem = $('<li>');
-        channelItem.attr('class', 'flex-item');
-        let iconColumn = $('<div>');
-        iconColumn.attr('class', 'streamer-icon');
-        $(createUserImage(stream.channel.logo)).appendTo(iconColumn);
-        $(iconColumn).appendTo(channelItem);
+        let channelItem = createChannelItem(featuredData.featured[i].stream.channel, true);
 
-        let nameColumn = $('<div>');
+        /*let nameColumn = $('<div>');
         nameColumn.attr('class', 'streamer-name');
         $(createTitle(stream.channel.display_name, true)).appendTo(nameColumn);
         nameColumn.attr('id', 'featured-stream' + stream.channel.display_name);
-        $(nameColumn).appendTo(channelItem);
+        $(nameColumn).appendTo(channelItem);*/
 
         let statusColumn = $('<div>');
         statusColumn.attr('class', 'stream-status');
@@ -174,23 +198,18 @@ $(document).ready(function() {
 
       if (featuredUsernames.includes(userName)) return;
 
-      let channelItem = $('<li>');
-      channelItem.attr('class', 'flex-item');
+      let channelItem = createChannelItem(userData, false);
 
-      let iconColumn = $('<div>');
-      iconColumn.attr('class', 'streamer-icon');
-      $(createUserImage(userData.logo)).appendTo(iconColumn);
-      $(iconColumn).appendTo(channelItem);
-
-      let nameColumn = $('<div>');
+      /*let nameColumn = $('<div>');
       nameColumn.attr('class', 'streamer-name');
-      $(createTitle(userName, false)).appendTo(nameColumn);
+      //$(createTitle(userData.display_name, false)).appendTo(nameColumn);
+      $(createTitle(userName, false)).appendTo(nameColumn);*/
 
-      if (userData.bio && userData.bio !== '') {
+      /*if (userData.bio && userData.bio !== '') {
         createTooltip(userData.bio).appendTo(nameColumn);
       }
 
-      $(nameColumn).appendTo(channelItem);
+      $(nameColumn).appendTo(channelItem);*/
 
       if (userData.hasOwnProperty("status") && userData.status == 422) {
           let statusColumn = $('<div>'); //repeated code in renderStreamData, should refactor
@@ -218,6 +237,7 @@ $(document).ready(function() {
          console.log(jqXHR);
       }
     });
+
   }
 
 
