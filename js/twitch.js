@@ -4,7 +4,6 @@ $(document).ready(function() {
 
   /* List of users to query. */
   const USERNAMES = ["freecodecamp", "yoda", "magic", "channelfireball", "liveatthebike", "karltowns32", "celinalin", "nanonoko","wsopreplaystream","jonathanlittle", "esl_sc2", "ogamingsc2", "habathcx", "terakilobyte", "thomasballinger", "comster404", "brunofin" ];
-  //const USERNAMES = ["brunofin", "comster404"];
 
   const CLIENT_ID = "skji05ppnsavrfz5ydkkttvbbzj2h29";
   const TWITCH_URL = "https://www.twitch.tv";
@@ -35,27 +34,27 @@ $(document).ready(function() {
 
   /* Creates the image tag for the user. If they do not have an image a default will be used in place.*/
   const createUserImage = (src) => {
-    let imageTag = $('<img>');
-    imageTag.addClass('user-icon');
+    let imageTag = $("<img>");
+    imageTag.addClass("user-icon");
 
-    if (src != null) imageTag.attr('src', src);
-    else imageTag.attr('src', NO_USER_ICON_URL);
+    if (src != null) imageTag.attr("src", src);
+    else imageTag.attr("src", NO_USER_ICON_URL);
     return imageTag;
   }
 
 
   const createLink = (streamerName) => {
-    let link = $('<a>');
-    link.attr('href', `${TWITCH_URL}/${streamerName}`);
-    link.attr('target', '_blank');
+    let link = $("<a>");
+    link.attr("href", `${TWITCH_URL}/${streamerName}`);
+    link.attr("target", "_blank");
     return link;
   }
 
   /* Creates the image tag for showing the preview of the stream. Only used when a stream is live, there are no previews on offline streams. */
   const createPreviewImage = (streamerName, src) => {
     let link = createLink(streamerName);
-    let imageTag = $('<img>');
-    imageTag.attr('src', src);
+    let imageTag = $("<img>");
+    imageTag.attr("src", src);
     link.html(imageTag);
     return link;
   }
@@ -72,6 +71,15 @@ $(document).ready(function() {
     return link;
   }
 
+  const createTooltip = (bio) => {
+    let span = $("<span>");
+    span.attr("tooltip", bio);
+    span.attr("tooltip-position", "top");
+    let img = $("<img>");
+    img.attr("src", "imgs/info.png");
+    img.appendTo(span);
+    return span;
+  }
 
   /* Pulls information about a featured streamer. */
   const getFeaturedInfo = (name) => {
@@ -79,13 +87,7 @@ $(document).ready(function() {
       if (userData.bio != null && userData.bio != '') {
         console.log("Username: " + userData.name);
         featuredUsernames.push(userData.name);
-        let span = $("<span>");
-        span.attr('tooltip', userData.bio);
-        span.attr("tooltip-position", "top");
-        let img = $('<img>');
-        img.attr('src', 'imgs/info.png');
-        img.appendTo(span);
-        span.appendTo($('#featured-stream'+name));
+        createTooltip(userData.bio).appendTo($(`#featured-stream${name}`));
       }
     });
   }
@@ -188,13 +190,7 @@ $(document).ready(function() {
       $(createTitle(userName, false)).appendTo(nameColumn);
 
       if (userData.bio && userData.bio !== '') {
-        let span = $("<span>");
-        span.attr('tooltip', userData.bio);
-        span.attr("tooltip-position", "top");
-        let img = $('<img>');
-        img.attr('src', 'imgs/info.png');
-        img.appendTo(span);
-        span.appendTo(nameColumn);
+        createTooltip(userData.bio).appendTo(nameColumn);
       }
 
       $(nameColumn).appendTo(channelItem);
