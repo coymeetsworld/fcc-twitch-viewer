@@ -4,6 +4,8 @@ $(document).ready(function() {
 
   /* List of users to query. */
   const USERNAMES = ["freecodecamp", "maximilian_dood", "magic", "channelfireball", "liveatthebike", "karltowns32", "celinalin", "nanonoko","wsopreplaystream","jonathanlittle", "esl_sc2", "ogamingsc2", "habathcx", "terakilobyte", "thomasballinger", "comster404", "brunofin" ];
+  //const USERNAMES = ["maximilian_dood", "esl_sc2", "ogamingsc2" ];
+  //const USERNAMES = ["maximilian_dood"];
 
   const CLIENT_ID = "skji05ppnsavrfz5ydkkttvbbzj2h29";
   const TWITCH_URL = "https://www.twitch.tv";
@@ -51,15 +53,6 @@ $(document).ready(function() {
     return link;
   }
 
-
-  /* Creates the image tag for showing the preview of the stream. Only used when a stream is live, there are no previews on offline streams. */
-  const createPreviewImage = (streamerName, src) => {
-    let link = createLink(streamerName);
-    let imageTag = $("<img>");
-    imageTag.attr("src", src);
-    link.html(imageTag);
-    return link;
-  }
 
 
   /* Creates the link for the streamer to go to their Twitch page. Will also display if its a featured stream or not.*/
@@ -132,16 +125,53 @@ $(document).ready(function() {
   }
 
 
+  /* Creates the image tag for showing the preview of the stream. Only used when a stream is live, there are no previews on offline streams. */
+  const createPreviewImage = (streamerName, src) => {
+    let streamPreview = $("<div>");
+    streamPreview.addClass("stream-preview");
+    let link = createLink(streamerName);
+    let imageTag = $("<img>");
+    imageTag.attr("src", src);
+    link.html(imageTag);
+    link.appendTo(streamPreview);
+    return streamPreview;
+  }
 
+
+  const createPreviewInfo = (viewers) => {
+    let viewersDiv = $("<div>");
+    viewersDiv.addClass("stream-preview-info");
+    viewersDiv.html(`Viewers: ${viewers}`);
+    return viewersDiv;
+  }
 
   // from featured users: featuredData.featured[i].stream.channel
   // from normal users: userData
-  const createChannelItem = (streamData, isFeatured) => {
+  const createChannelItem = (streamData, userData, isFeatured) => {
+    console.log("stream");
+    console.log(streamData);
+    console.log("user");
+    console.log(userData);
     let channelItem = $('<li>');
     channelItem.attr('class', 'flex-item');
 
-    createUserIcon(streamData.logo).appendTo(channelItem);
-    createStreamHeader(streamData.display_name, streamData.bio, isFeatured).appendTo(channelItem);
+    createUserIcon(userData.logo).appendTo(channelItem);
+    createStreamHeader(userData.display_name, userData.bio, isFeatured).appendTo(channelItem);
+    if (!streamData) {
+      channelItem.addClass("channel-offline");
+      createStreamStatus("offline").appendTo(channelItem);
+    } else if (isFeatured) {
+      channelItem.addClass("channel-featured");
+      createStreamStatus("online", streamData.channel, isFeatured).appendTo(channelItem);
+      createPreviewImage(userData.display_name, streamData.preview.large).appendTo(channelItem);
+      createPreviewInfo(streamData.viewers).appendTo(channelItem);
+    } else {
+      channelItem.addClass("channel-online");
+      createStreamStatus("online", streamData.channel).appendTo(channelItem);
+      createPreviewImage(userData.display_name, streamData.preview.large).appendTo(channelItem);
+      createPreviewInfo(streamData.viewers).appendTo(channelItem);
+    }
+ 
     return channelItem;
   }
 
@@ -150,6 +180,8 @@ $(document).ready(function() {
     channelItem.attr('class', 'flex-item');
     createUserIcon().appendTo(channelItem);
     createStreamHeader(username).appendTo(channelItem);
+    channelItem.addClass("channel-closed");
+    createStreamStatus("closed").appendTo(channelItem);
     return channelItem;
   }
 
@@ -165,25 +197,7 @@ $(document).ready(function() {
       let stream;
       for (let i = 0; i < 5; i++) {
         stream = featuredData.featured[i].stream;
-
-        let channelItem = createChannelItem(featuredData.featured[i].stream.channel, true);
-        channelItem.addClass("channel-featured");
-        createStreamStatus("online", stream.channel, true).appendTo(channelItem);
-
-        /*let statusColumn = $('<div>');
-        statusColumn.attr('class', 'stream-status');
-        channelItem.addClass('channel-featured');
-        statusColumn.text(stream.channel.game + ": " + stream.channel.status);
-        $(statusColumn).appendTo(channelItem);*/
-
-        let streamPreview = $('<div>');
-        $(createPreviewImage(stream.channel.display_name, stream.preview.large)).appendTo(streamPreview);
-        streamPreview.addClass('stream-preview');
-        $(streamPreview).appendTo(channelItem);
-        let streamPreviewInfo = $('<div>');
-        streamPreviewInfo.addClass('stream-preview-info');
-        streamPreviewInfo.html("Viewers: " + stream.viewers);
-        $(streamPreviewInfo).appendTo(channelItem);
+        let channelItem = createChannelItem(stream, stream.channel, true);
 
         $(channelItem).appendTo("#channels");
         getFeaturedInfo(stream.channel.display_name);
@@ -194,28 +208,6 @@ $(document).ready(function() {
     });
   }
 
-
-  const renderStreamData = (streamData, userData, channelItem) => {
-    if (streamData.stream === null) {
-      channelItem.addClass("channel-offline");
-      createStreamStatus("offline").appendTo(channelItem);
-
-    } else {
-      channelItem.addClass("channel-online");
-      createStreamStatus("online", streamData.stream.channel).appendTo(channelItem);
-
-      let streamPreview = $('<div>');
-      $(createPreviewImage(userData.name, streamData.stream.preview.large)).appendTo(streamPreview);
-      streamPreview.addClass('stream-preview');
-      $(streamPreview).appendTo(channelItem);
-      let streamPreviewInfo = $('<div>');
-      streamPreviewInfo.addClass('stream-preview-info');
-      streamPreviewInfo.html("Viewers: " + streamData.stream.viewers);
-      $(streamPreviewInfo).appendTo(channelItem);
-    }
-
-    $(channelItem).appendTo("#channels");
-  }
 
   const renderUserData = (userName, userData) => {
 
@@ -228,23 +220,13 @@ $(document).ready(function() {
       if (userData.hasOwnProperty("status")) {
         if (userData.status == 422) {
           channelItem = createClosedChannelItem(userName);
-          createStreamStatus("closed").appendTo(channelItem);
-          channelItem.addClass("channel-closed");
           $(channelItem).appendTo("#channels");
         }
         else if (userData.status == 404) {
           console.log(`${userData.status} ${userData.error}: ${userData.message}, not creating an entry.`);
         }
-          /*let statusColumn = $('<div>'); //repeated code in renderStreamData, should refactor
-          statusColumn.attr('class', 'stream-status');
-
-          channelItem.addClass('channel-closed');
-          statusColumn.text('Account closed');
-          $(statusColumn).appendTo(channelItem);
-          $(channelItem).appendTo("#channels");*/
-          return;
+        return;
       }
-      channelItem = createChannelItem(userData, false);
 
     $.ajax({
       type: "GET",
@@ -252,8 +234,9 @@ $(document).ready(function() {
       headers: {
         'CLIENT-ID': 'skji05ppnsavrfz5ydkkttvbbzj2h29'
       },
-      success: function(data, textStatus, jqXHR ){
-         renderStreamData(data, userData, channelItem);
+      success: function(streamData, textStatus, jqXHR ){
+         channelItem = createChannelItem(streamData.stream, userData, false);
+         $(channelItem).appendTo("#channels");
       },
       error: function(jqXHR, textStatus, errorThrown ) {
          console.log(errorThrown);
